@@ -1,0 +1,11 @@
+---
+title: "Docker Tutorial"
+author: "Kevil Nguyen"
+date: "2023-12-07"
+categories: [tutorial, code, notebook]
+---
+
+Ghi chú lại những tổng kết quan trọng trong quá trình học và thực hành Docker
+
+![](img/thumbnail.jpg)
+
