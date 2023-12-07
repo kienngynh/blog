@@ -101,7 +101,7 @@ DevContainer là một khái niệm trong Docker giúp đơn giản hóa quá tr
 Dưới đây là bảng chi tiết với các tùy chọn cụ thể của mỗi thuộc tính trong `devcontainer.json`:
 
 | Thuộc Tính          | Tùy Chọn                  | Mô Tả                                                                                                                                                                               | Ví Dụ                                          |
-|---------------------|---------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|------------------------------------------------|
+|---------------------|-------------------|--------------------|----------------------|
 | `name`              | -                         | Tên của DevContainer, cung cấp nhãn cho môi trường phát triển.                                                                                                                      | `"Node.js"`                                    |
 | `image`             | -                         | Tên của hình ảnh trong một container registry (Docker Hub, GitHub Container Registry, Azure Container Registry) mà VS Code sẽ sử dụng để tạo DevContainer.                     | `"mcr.microsoft.com/devcontainers/javascript-node:0-18"` |
 | `dockerfile`        | -                         | Cho phép sử dụng một Dockerfile tùy chỉnh thay vì tham chiếu đến một hình ảnh.                                                                                                      | `"Dockerfile"`                                 |
@@ -126,7 +126,6 @@ Dưới đây là bảng chi tiết với các tùy chọn cụ thể của mỗ
 - Mỗi tùy chọn cụ thể của thuộc tính được liệt kê trong cột "Tùy Chọn" của bảng.
 - Các giải thích chi tiết cung cấp hiểu biết về mục đích và cách sử dụng mỗi tùy chọn cụ thể.
 - Các ví dụ minh họa giúp làm rõ cách áp dụng mỗi tùy chọn trong một ngữ cảnh thực tế.
-
 
 ### Chi Tiết Cụ Thể Của Mỗi Thuộc Tính:
 
