@@ -4,8 +4,333 @@ author: "Kevil Nguyen"
 date: "2023-12-07"
 categories: [tutorial, code, notebook]
 ---
+# Docker Tutorial
 
 Ghi chú lại những tổng kết quan trọng trong quá trình học và thực hành Docker
 
 ![](img/thumbnail.jpg)
 
+
+## Docker là gì?
+
+[Docker](https://www.docker.com/) là một nền tảng ảo hóa dựa trên container, giúp đơn giản hóa quá trình triển khai và quản lý ứng dụng. Containers là môi trường đóng gói chứa tất cả những thứ cần thiết để chạy một ứng dụng, bao gồm mã nguồn, thư viện, biến môi trường và cài đặt hệ thống.
+
+## Các Khái Niệm Cơ Bản:
+
+### 1. Image
+
+Một image là một môi trường đóng gói có chứa tất cả các thông tin cần thiết để chạy một ứng dụng, bao gồm cả hệ điều hành, thư viện, và ứng dụng cụ thể.
+
+```markdown
+docker pull ubuntu:latest
+```
+
+### 2. Container
+
+Container là một thực thể chạy của một image. Nó cung cấp một môi trường cô lập để chạy ứng dụng mà không ảnh hưởng đến hệ thống chủ.
+
+```markdown
+docker run -d -p 8080:80 --name my-container my-app
+```
+
+### 3. Dockerfile
+
+Dockerfile là một tệp văn bản chứa các hướng dẫn để tạo một image. Nó mô tả cách image nên được xây dựng.
+
+```dockerfile
+# Dockerfile example
+FROM node:14
+WORKDIR /app
+COPY . .
+RUN npm install
+CMD ["npm", "start"]
+```
+
+### 4. Docker Compose
+
+[Docker Compose](https://docs.docker.com/compose/) là công cụ giúp định nghĩa và chạy các dịch vụ được đóng gói trong các containers. Nó giúp quản lý nhiều containers và các cài đặt liên quan.
+
+```markdown
+version: '3'
+services:
+  web:
+    image: nginx:latest
+    ports:
+      - "8080:80"
+```
+
+### 5. Docker Registry
+
+[Docker Registry](https://hub.docker.com/) là nơi lưu trữ và chia sẻ các images. Docker Hub là một ví dụ của Docker Registry.
+
+```markdown
+docker push username/my-app:latest
+```
+
+## Các lệnh thường dùng:
+
+| Lệnh                | Tùy Chọn / Tham Số  | Chức Năng                                       | Viết Tắt |
+|---------------------|----------------------|--------------------------------------------------|----------|
+| `docker run`        | `-d`                 | Chạy container ở chế độ nền (detached).         | Detached |
+|                     | `--name`             | Đặt tên cho container.                           | Name     |
+|                     | `--publish` (`-p`)   | Chuyển tiếp cổng giữa máy host và container.    | Port     |
+|                     | `--volume` (`-v`)    | Mount thư mục hoặc volume giữa máy host và container. | Volume |
+| `docker build`      | `-t`                 | Gắn thêm thông tin về thời gian (timestamps).   | Tag      |
+| `docker exec`       | `-i`                 | Mở chế độ tương tác khi chạy lệnh trong container. | Interactive |
+|                     | `-t`                 | Tạo một pseudo-TTY để tương tác với container.   | TTY      |
+| `docker-compose`    | `-f`                 | Chỉ định Docker Compose file.                    | File     |
+
+## DevContainer là gì?
+
+**Ngắn Gọn:**
+DevContainer là một khái niệm trong Docker giúp đơn giản hóa quá trình cấu hình môi trường phát triển. Nó sử dụng Docker để xây dựng một container chứa môi trường phát triển cụ thể cho một dự án, giúp đảm bảo rằng tất cả các thành viên trong đội làm việc trên cùng một nền tảng.
+
+**Tại sao Nên Sử Dụng DevContainer?**
+
+1. **Đồng Nhất Môi Trường Phát Triển:**
+   - DevContainer giúp đảm bảo rằng mọi người trong đội làm việc với cùng một môi trường phát triển, tránh sự không nhất quán và xung đột.
+
+2. **Dễ Quản Lý và Phát Triển:**
+   - Cấu hình được xác định trong một tệp cấu hình, giúp quản lý dự án và môi trường phát triển trở nên đơn giản.
+
+3. **Tích Hợp Dễ Dàng với IDE:**
+   - Các IDE phổ biến như Visual Studio Code hỗ trợ nhanh chóng và dễ dàng tích hợp DevContainer vào quá trình phát triển.
+
+### Thuộc tính
+
+Dưới đây là bảng chi tiết với các tùy chọn cụ thể của mỗi thuộc tính trong `devcontainer.json`:
+
+| Thuộc Tính          | Tùy Chọn                  | Mô Tả                                                                                                                                                                               | Ví Dụ                                          |
+|---------------------|---------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|------------------------------------------------|
+| `name`              | -                         | Tên của DevContainer, cung cấp nhãn cho môi trường phát triển.                                                                                                                      | `"Node.js"`                                    |
+| `image`             | -                         | Tên của hình ảnh trong một container registry (Docker Hub, GitHub Container Registry, Azure Container Registry) mà VS Code sẽ sử dụng để tạo DevContainer.                     | `"mcr.microsoft.com/devcontainers/javascript-node:0-18"` |
+| `dockerfile`        | -                         | Cho phép sử dụng một Dockerfile tùy chỉnh thay vì tham chiếu đến một hình ảnh.                                                                                                      | `"Dockerfile"`                                 |
+| `customizations`    | `vscode`                  | Cấu hình các thuộc tính cụ thể cho từng công cụ, chẳng hạn như cài đặt và cấu hình extensions cho VS Code.                                                                       | `"customizations": { "vscode": { "settings": {}, "extensions": ["streetsidesoftware.code-spell-checker"] } }` |
+| `settings`          | -                         | Thêm giá trị mặc định từ `settings.json` vào một tệp cài đặt riêng biệt dành cho container/máy, chẳng hạn như `"terminal.integrated.defaultProfile.linux": "bash"`.         | `"settings": { "terminal.integrated.defaultProfile.linux": "bash" }` |
+| `extensions`        | -                         | Một mảng các ID của extensions cần được cài đặt bên trong container khi nó được tạo.                                                                                               | `"extensions": ["streetsidesoftware.code-spell-checker"]` |
+| `forwardPorts`      | -                         | Liệt kê các cổng bên trong container mà bạn muốn sẵn sàng ở cổng cục bộ.                                                                                                          | `"forwardPorts": [3000]`                       |
+| `portsAttributes`   | -                         | Đặt các thuộc tính mặc định cho các cổng được chuyển tiếp cụ thể.                                                                                                                 | `"portsAttributes": { "3000": { "label": "Hello Remote World", "onAutoForward": "notify" } }` |
+| `postCreateCommand` | -                         | Một chuỗi lệnh hoặc danh sách đối số lệnh để chạy sau khi container được tạo.                                                                                                   | `"postCreateCommand": "yarn install"`         |
+| `remoteUser`        | -                         | Ghi đè người dùng mà VS Code chạy như trong container (cùng với các tiến trình con). Mặc định là `containerUser`.                                                             | `"remoteUser": "root"`                         |
+| `features`          | -                         | Một đối tượng chứa các tính năng cụ thể của Dev Container để thêm vào.                                                                                                             | `"features": { "my-feature": true }`          |
+| `build`             | `dockerfile`, `context`   | Đối tượng mô tả cách xây dựng Dev Container từ Dockerfile hoặc Docker Compose.                                                                                                  | `"build": { "dockerfile": "Dockerfile", "context": ".." }` |
+| `runArgs`           | -                         | Mảng các đối số thêm vào lệnh `docker run` khi khởi chạy container.                                                                                                               | `"runArgs": ["--user", "1000:1000"]`          |
+| `postCreateCommand` | -                         | Một chuỗi lệnh hoặc danh sách đối số lệnh để chạy sau khi container được tạo.                                                                                                   | `"postCreateCommand": "yarn install"`         |
+| `shutdownAction`    | `stopContainer`, `none`   | Hành động mà VS Code sẽ thực hiện khi bạn đóng một cửa sổ hoặc tab trong đó Dev Container đang chạy.                                                                             | `"shutdownAction": "stopContainer"`           |
+| `overrideCommand`   | -                         | Một lệnh hoặc danh sách đối số lệnh để thay thế lệnh mặc định khi khởi chạy container.                                                                                         | `"overrideCommand": "npm start"`              |
+| `remoteUser`        | -                         | Ghi đè người dùng mà VS Code chạy như trong container (cùng với các tiến trình con). Mặc định là `containerUser`.                                                             | `"remoteUser": "root"`                         |
+| `workspaceFolder`   | `/workspace`              | Đường dẫn trong container mà mọi hoạt động của VS Code sẽ được thực hiện trong đó.                                                                                               | `"workspaceFolder": "/workspace"`            |
+| `workspaceMount`    | -                         | Cấu hình mount của thư mục workspace từ máy host vào container.                                                                                                                    |
+
+**Chú Ý:**
+- Mỗi tùy chọn cụ thể của thuộc tính được liệt kê trong cột "Tùy Chọn" của bảng.
+- Các giải thích chi tiết cung cấp hiểu biết về mục đích và cách sử dụng mỗi tùy chọn cụ thể.
+- Các ví dụ minh họa giúp làm rõ cách áp dụng mỗi tùy chọn trong một ngữ cảnh thực tế.
+
+
+### Chi Tiết Cụ Thể Của Mỗi Thuộc Tính:
+
+#### 1. `customizations`
+
+   - **`vscode`**:
+     - *`settings`:* Cấu hình settings.json cho VS Code bên trong container.
+       - *Ví Dụ:* `{ "settings": { "python.linting.enabled": true } }`
+     - *`extensions`:* Danh sách các extension ID cần cài đặt trong VS Code.
+       - *Ví Dụ:* `["ms-python.python"]`
+
+#### 2. `settings`
+
+   - *`<setting>`:* Các thuộc tính cụ thể của settings.json.
+     - *Ví Dụ:* `{ "terminal.integrated.defaultProfile.linux": "bash" }`
+
+#### 3. `extensions`
+
+   - *`<extension>`:* ID của extension cần được cài đặt.
+     - *Ví Dụ:* `["streetsidesoftware.code-spell-checker"]`
+
+#### 4. `forwardPorts`
+
+   - *`<port>`:* Cổng bên trong container mà bạn muốn sẵn sàng ở cổng cục bộ.
+     - *Ví Dụ:* `[3000, 5000]`
+
+#### 5. `portsAttributes`
+
+   - *`<port>`:*
+     - **`label`**: Nhãn mô tả cho cổng được chuyển tiếp.
+       - *Ví Dụ:* `"Hello Remote World"`
+     - **`onAutoForward`**: Hành động khi cổng được chuyển tiếp tự động (notify/silent).
+       - *Ví Dụ:* `"notify"`
+
+#### 6. `postCreateCommand`
+
+   - *`<command>`:* Chuỗi lệnh hoặc danh sách đối số lệnh để chạy sau khi container được tạo.
+     - *Ví Dụ:* `"yarn install"`
+
+### 1. **Set Docker Compose Project Name**
+
+**Giải Thích Ngắn Gọn:**
+- Xác định tên dự án cho Docker Compose giúp phân biệt giữa các tài nguyên được tạo bởi cùng một file `docker-compose.yml` khi chúng chia sẻ không gian tên.
+
+**Ví Dụ:**
+```bash
+docker-compose -p myproject up -d
+```
+
+### 2. **Connect to Multiple Containers**
+
+**Giải Thích Ngắn Gọn:**
+- Liên kết nhiều container cho phép chúng giao tiếp và làm việc cùng nhau, tạo ra một môi trường ứng dụng phức tạp với nhiều thành phần.
+
+**Ví Dụ:**
+```yaml
+services:
+  web:
+    image: nginx
+  api:
+    image: myapi
+  database:
+    image: postgres
+```
+
+### 3. **Configure Separate Containers**
+
+**Giải Thích Ngắn Gọn:**
+- Cấu hình các container riêng lẻ cho phép định rõ các thiết lập đặc biệt cho từng dịch vụ, giảm sự phụ thuộc giữa chúng.
+
+**Ví Dụ:**
+```yaml
+services:
+  web:
+    image: nginx
+    ports:
+      - "80:80"
+  api:
+    image: myapi
+    environment:
+      - DATABASE_URL=mydatabase
+  database:
+    image: postgres
+    volumes:
+      - ./data:/var/lib/postgresql/data
+```
+
+### 4. **Develop on a Remote Docker Host**
+
+**Giải Thích Ngắn Gọn:**
+- Phát triển trên một Docker host từ xa giúp lập trình viên làm việc trên môi trường mô phỏng, giả lập môi trường sản xuất một cách chính xác.
+
+**Ví Dụ:**
+```bash
+docker-compose -H ssh://user@remote-host up -d
+```
+
+### 5. **Ví Dụ Tổng Hợp Cho Cả Bốn Khái Niệm Trên:**
+
+```yaml
+version: '3'
+
+services:
+  frontend:
+    image: frontend
+    networks:
+      - mynetwork
+  backend:
+    image: backend
+    networks:
+      - mynetwork
+  database:
+    image: postgres
+    networks:
+      - mynetwork
+    volumes:
+      - ./data:/var/lib/postgresql/data
+
+networks:
+  mynetwork:
+```
+
+- Dự án Docker Compose có tên là "myproject".
+- Kết nối ba container (frontend, backend, database) trên một mạng có tên "mynetwork".
+- Mỗi container có cấu hình riêng với cổng, biến môi trường, và thư mục dữ liệu.
+- Dự án cho phép phát triển cả ba container trên một Docker host từ xa nếu cần thiết.
+
+## Dockerfile và Các Lệnh Phổ Biến
+
+### Dockerfile Là Gì?
+Dockerfile là một tệp văn bản chứa một loạt các lệnh, mỗi lệnh đại diện cho một bước trong quá trình xây dựng một hình ảnh Docker. Nó mô tả cách một hình ảnh nên được xây dựng từ các thành phần khác nhau và cài đặt các phần mềm cần thiết.
+
+### Các Lệnh Phổ Biến trong Dockerfile:
+
+| Lệnh                  | Mô Tả                                                                           | Ví Dụ                                           |
+|-----------------------|----------------------------------------------------------------------------------|--------------------------------------------------|
+| `FROM`                | Chọn hình ảnh cơ sở để bắt đầu xây dựng.                                       | `FROM ubuntu:latest`                             |
+| `COPY`                | Sao chép các tệp từ máy host vào hình ảnh.                                    | `COPY app.py /app/`                              |
+| `ADD`                 | Sao chép các tệp từ máy host hoặc URL vào hình ảnh.                          | `ADD https://example.com/file.txt /app/`         |
+| `RUN`                 | Thực hiện các lệnh trong môi trường hình ảnh và tạo lớp mới.                 | `RUN apt-get update && apt-get install -y curl`  |
+| `WORKDIR`             | Đặt thư mục làm việc cho các lệnh sau đó.                                   | `WORKDIR /app`                                   |
+| `EXPOSE`              | Mô tả các cổng mà ứng dụng sẽ lắng nghe khi chạy.                           | `EXPOSE 80/tcp`                                  |
+| `ENV`                 | Đặt các biến môi trường cho hình ảnh.                                        | `ENV NODE_ENV production`                        |
+| `CMD` hoặc `ENTRYPOINT` | Xác định lệnh mặc định khi container được chạy.                              | `CMD ["python", "app.py"]`                       |
+| `ARG`                 | Định nghĩa các biến mà người dùng có thể truyền vào lúc xây dựng.          | `ARG version=latest`                             |
+| `LABEL`               | Thêm các metadata (nhãn) vào hình ảnh.                                       | `LABEL maintainer="admin@example.com"`           |
+| `VOLUME`              | Chỉ định các thư mục làm thư mục volume và được dùng để lưu trữ dữ liệu.    | `VOLUME /data`                                  |
+| `RUN`, `CMD`, `ENTRYPOINT` | Các lệnh có thể sử dụng dưới dạng shell hoặc mảng đối số.                  | `RUN apt-get update && apt-get install -y curl`  |
+
+**Lưu Ý:**
+- Một Dockerfile thường bắt đầu bằng lệnh `FROM`.
+- Các lệnh được thực thi theo thứ tự từ trên xuống dưới trong Dockerfile.
+- Có thể kết hợp nhiều lệnh trong một dòng bằng cách sử dụng `&&`.
+- Các lệnh `CMD` và `ENTRYPOINT` giúp xác định hành động mặc định khi container chạy.
+
+Dockerfile là công cụ quan trọng để xây dựng hình ảnh Docker và tự động hóa quy trình triển khai ứng dụng.
+
+## Docker Compose: Giải Thích Lệnh và Thuộc Tính
+
+Docker Compose là công cụ giúp quản lý và triển khai ứng dụng đa-container trong môi trường Docker. Dưới đây là một bảng tổng hợp các lệnh và thuộc tính quan trọng trong Docker Compose:
+
+| Lệnh                      | Thuộc Tính                | Kiểu Dữ Liệu | Mô Tả Chi Tiết                                      | Ví Dụ                                           |
+|---------------------------|---------------------------|--------------|------------------------------------------------------|--------------------------------------------------|
+| `docker-compose up`        | -                         | -            | Chạy các dịch vụ được định nghĩa trong file `docker-compose.yml`. | `docker-compose up`                              |
+| `docker-compose down`      | -                         | -            | Dừng và xóa tất cả các container, mạng và dữ liệu đã tạo. | `docker-compose down`                            |
+| `docker-compose ps`        | -                         | -            | Liệt kê các container đang chạy.                    | `docker-compose ps`                              |
+| `docker-compose exec`      | -                         | -            | Thực hiện lệnh bên trong một container.              | `docker-compose exec webserver ls`              |
+| `docker-compose logs`      | -                         | -            | Xem logs của các dịch vụ.                           | `docker-compose logs`                            |
+| `docker-compose build`     | -                         | -            | Xây dựng lại các images của dịch vụ.               | `docker-compose build`                           |
+
+#### Thuộc Tính Của `docker-compose.yml`:
+
+| Thuộc Tính                | Kiểu Dữ Liệu | Mô Tả Chi Tiết                                      | Ví Dụ                                           |
+|---------------------------|--------------|------------------------------------------------------|--------------------------------------------------|
+| `version`                 | -            | Phiên bản của Docker Compose.                        | `version: '3'`                                   |
+| `services`                | -            | Định nghĩa các dịch vụ, mỗi dịch vụ có các cài đặt riêng. | `services: web, db`                             |
+| `image`                   | -            | Tên hình ảnh của dịch vụ.                           | `image: nginx:latest`                            |
+| `build`                   | -            | Xây dựng dịch vụ từ Dockerfile trong thư mục hiện tại hoặc chỉ định. | `build: ./web`                                  |
+| `ports`                   | -            | Chuyển tiếp cổng giữa máy host và container.        | `ports: - "8080:80"`                             |
+| `volumes`                 | -            | Mount thư mục hoặc volume giữa máy host và container. | `volumes: - ./data:/app/data`                    |
+| `environment`             | -            | Đặt biến môi trường cho dịch vụ.                    | `environment: - DEBUG=True`                      |
+| `depends_on`              | -            | Xác định các dịch vụ phụ thuộc cần chạy trước.      | `depends_on: - db`                               |
+
+#### Ví Dụ Đầy Đủ `docker-compose.yml`:
+
+```yaml
+version: '3'
+services:
+  web:
+    image: nginx:latest
+    ports:
+      - "8080:80"
+    volumes:
+      - ./web:/app
+    environment:
+      - DEBUG=True
+  db:
+    image: postgres:latest
+    volumes:
+      - /var/lib/postgresql/data
+    environment:
+      - POSTGRES_PASSWORD=mysecretpassword
+```
+
+- Định nghĩa hai dịch vụ: `web` (nginx) và `db` (PostgreSQL).
+- Dịch vụ `web` sử dụng hình ảnh nginx, chuyển tiếp cổng 8080 từ máy host vào cổng 80 của container, mount thư mục `./web` vào `/app`, và đặt biến môi trường DEBUG là True.
+- Dịch vụ `db` sử dụng hình ảnh PostgreSQL, mount thư mục dữ liệu vào `/var/lib/postgresql/data`, và đặt mật khẩu PostgreSQL.

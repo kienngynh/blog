@@ -22,6 +22,40 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
@@ -91,7 +125,7 @@ ul.task-list li input[type="checkbox"] {
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
   <li class="nav-item">
     <a class="nav-link" href="../../about.html"> 
-<span class="menu-text">About Me</span></a>
+<span class="menu-text">About</span></a>
   </li>  
   <li class="nav-item compact">
     <a class="nav-link" href="https://github.com/kienngynh"> <i class="bi bi-github" role="img">
@@ -154,6 +188,8 @@ ul.task-list li input[type="checkbox"] {
 
 
 
+<section id="docker-tutorial" class="level1">
+<h1>Docker Tutorial</h1>
 <p>Ghi chú lại những tổng kết quan trọng trong quá trình học và thực hành Docker</p>
 <div id="fig-539a35d47e664c97a50115a146a7f1bd-1" class="quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
@@ -162,8 +198,665 @@ ul.task-list li input[type="checkbox"] {
 </div>
 </figure>
 </div>
+<section id="docker-là-gì" class="level2">
+<h2 class="anchored" data-anchor-id="docker-là-gì">Docker là gì?</h2>
+<p><a href="https://www.docker.com/">Docker</a> là một nền tảng ảo hóa dựa trên container, giúp đơn giản hóa quá trình triển khai và quản lý ứng dụng. Containers là môi trường đóng gói chứa tất cả những thứ cần thiết để chạy một ứng dụng, bao gồm mã nguồn, thư viện, biến môi trường và cài đặt hệ thống.</p>
+</section>
+<section id="các-khái-niệm-cơ-bản" class="level2">
+<h2 class="anchored" data-anchor-id="các-khái-niệm-cơ-bản">Các Khái Niệm Cơ Bản:</h2>
+<section id="image" class="level3">
+<h3 class="anchored" data-anchor-id="image">1. Image</h3>
+<p>Một image là một môi trường đóng gói có chứa tất cả các thông tin cần thiết để chạy một ứng dụng, bao gồm cả hệ điều hành, thư viện, và ứng dụng cụ thể.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>docker pull ubuntu:latest</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="container" class="level3">
+<h3 class="anchored" data-anchor-id="container">2. Container</h3>
+<p>Container là một thực thể chạy của một image. Nó cung cấp một môi trường cô lập để chạy ứng dụng mà không ảnh hưởng đến hệ thống chủ.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>docker run -d -p 8080:80 --name my-container my-app</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="dockerfile" class="level3">
+<h3 class="anchored" data-anchor-id="dockerfile">3. Dockerfile</h3>
+<p>Dockerfile là một tệp văn bản chứa các hướng dẫn để tạo một image. Nó mô tả cách image nên được xây dựng.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode dockerfile code-with-copy"><code class="sourceCode dockerfile"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Dockerfile example</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> node:14</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="kw">WORKDIR</span> /app</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="kw">COPY</span> . .</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="kw">RUN</span> <span class="ex">npm</span> install</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="kw">CMD</span> [<span class="st">"npm"</span>, <span class="st">"start"</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="docker-compose" class="level3">
+<h3 class="anchored" data-anchor-id="docker-compose">4. Docker Compose</h3>
+<p><a href="https://docs.docker.com/compose/">Docker Compose</a> là công cụ giúp định nghĩa và chạy các dịch vụ được đóng gói trong các containers. Nó giúp quản lý nhiều containers và các cài đặt liên quan.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="an">version:</span><span class="co"> '3'</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="an">services:</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  web:</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    image: nginx:latest</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>    ports:</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="ss">      - </span>"8080:80"</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="docker-registry" class="level3">
+<h3 class="anchored" data-anchor-id="docker-registry">5. Docker Registry</h3>
+<p><a href="https://hub.docker.com/">Docker Registry</a> là nơi lưu trữ và chia sẻ các images. Docker Hub là một ví dụ của Docker Registry.</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>docker push username/my-app:latest</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+</section>
+<section id="các-lệnh-thường-dùng" class="level2">
+<h2 class="anchored" data-anchor-id="các-lệnh-thường-dùng">Các lệnh thường dùng:</h2>
+<table class="table">
+<colgroup>
+<col style="width: 20%">
+<col style="width: 21%">
+<col style="width: 48%">
+<col style="width: 9%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Lệnh</th>
+<th>Tùy Chọn / Tham Số</th>
+<th>Chức Năng</th>
+<th>Viết Tắt</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>docker run</code></td>
+<td><code>-d</code></td>
+<td>Chạy container ở chế độ nền (detached).</td>
+<td>Detached</td>
+</tr>
+<tr class="even">
+<td></td>
+<td><code>--name</code></td>
+<td>Đặt tên cho container.</td>
+<td>Name</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td><code>--publish</code> (<code>-p</code>)</td>
+<td>Chuyển tiếp cổng giữa máy host và container.</td>
+<td>Port</td>
+</tr>
+<tr class="even">
+<td></td>
+<td><code>--volume</code> (<code>-v</code>)</td>
+<td>Mount thư mục hoặc volume giữa máy host và container.</td>
+<td>Volume</td>
+</tr>
+<tr class="odd">
+<td><code>docker build</code></td>
+<td><code>-t</code></td>
+<td>Gắn thêm thông tin về thời gian (timestamps).</td>
+<td>Tag</td>
+</tr>
+<tr class="even">
+<td><code>docker exec</code></td>
+<td><code>-i</code></td>
+<td>Mở chế độ tương tác khi chạy lệnh trong container.</td>
+<td>Interactive</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td><code>-t</code></td>
+<td>Tạo một pseudo-TTY để tương tác với container.</td>
+<td>TTY</td>
+</tr>
+<tr class="even">
+<td><code>docker-compose</code></td>
+<td><code>-f</code></td>
+<td>Chỉ định Docker Compose file.</td>
+<td>File</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="devcontainer-là-gì" class="level2">
+<h2 class="anchored" data-anchor-id="devcontainer-là-gì">DevContainer là gì?</h2>
+<p><strong>Ngắn Gọn:</strong> DevContainer là một khái niệm trong Docker giúp đơn giản hóa quá trình cấu hình môi trường phát triển. Nó sử dụng Docker để xây dựng một container chứa môi trường phát triển cụ thể cho một dự án, giúp đảm bảo rằng tất cả các thành viên trong đội làm việc trên cùng một nền tảng.</p>
+<p><strong>Tại sao Nên Sử Dụng DevContainer?</strong></p>
+<ol type="1">
+<li><strong>Đồng Nhất Môi Trường Phát Triển:</strong>
+<ul>
+<li>DevContainer giúp đảm bảo rằng mọi người trong đội làm việc với cùng một môi trường phát triển, tránh sự không nhất quán và xung đột.</li>
+</ul></li>
+<li><strong>Dễ Quản Lý và Phát Triển:</strong>
+<ul>
+<li>Cấu hình được xác định trong một tệp cấu hình, giúp quản lý dự án và môi trường phát triển trở nên đơn giản.</li>
+</ul></li>
+<li><strong>Tích Hợp Dễ Dàng với IDE:</strong>
+<ul>
+<li>Các IDE phổ biến như Visual Studio Code hỗ trợ nhanh chóng và dễ dàng tích hợp DevContainer vào quá trình phát triển.</li>
+</ul></li>
+</ol>
+<section id="thuộc-tính" class="level3">
+<h3 class="anchored" data-anchor-id="thuộc-tính">Thuộc tính</h3>
+<p>Dưới đây là bảng chi tiết với các tùy chọn cụ thể của mỗi thuộc tính trong <code>devcontainer.json</code>:</p>
+<table class="table">
+<colgroup>
+<col style="width: 7%">
+<col style="width: 9%">
+<col style="width: 65%">
+<col style="width: 17%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Thuộc Tính</th>
+<th>Tùy Chọn</th>
+<th>Mô Tả</th>
+<th>Ví Dụ</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>name</code></td>
+<td>-</td>
+<td>Tên của DevContainer, cung cấp nhãn cho môi trường phát triển.</td>
+<td><code>"Node.js"</code></td>
+</tr>
+<tr class="even">
+<td><code>image</code></td>
+<td>-</td>
+<td>Tên của hình ảnh trong một container registry (Docker Hub, GitHub Container Registry, Azure Container Registry) mà VS Code sẽ sử dụng để tạo DevContainer.</td>
+<td><code>"mcr.microsoft.com/devcontainers/javascript-node:0-18"</code></td>
+</tr>
+<tr class="odd">
+<td><code>dockerfile</code></td>
+<td>-</td>
+<td>Cho phép sử dụng một Dockerfile tùy chỉnh thay vì tham chiếu đến một hình ảnh.</td>
+<td><code>"Dockerfile"</code></td>
+</tr>
+<tr class="even">
+<td><code>customizations</code></td>
+<td><code>vscode</code></td>
+<td>Cấu hình các thuộc tính cụ thể cho từng công cụ, chẳng hạn như cài đặt và cấu hình extensions cho VS Code.</td>
+<td><code>"customizations": { "vscode": { "settings": {}, "extensions": ["streetsidesoftware.code-spell-checker"] } }</code></td>
+</tr>
+<tr class="odd">
+<td><code>settings</code></td>
+<td>-</td>
+<td>Thêm giá trị mặc định từ <code>settings.json</code> vào một tệp cài đặt riêng biệt dành cho container/máy, chẳng hạn như <code>"terminal.integrated.defaultProfile.linux": "bash"</code>.</td>
+<td><code>"settings": { "terminal.integrated.defaultProfile.linux": "bash" }</code></td>
+</tr>
+<tr class="even">
+<td><code>extensions</code></td>
+<td>-</td>
+<td>Một mảng các ID của extensions cần được cài đặt bên trong container khi nó được tạo.</td>
+<td><code>"extensions": ["streetsidesoftware.code-spell-checker"]</code></td>
+</tr>
+<tr class="odd">
+<td><code>forwardPorts</code></td>
+<td>-</td>
+<td>Liệt kê các cổng bên trong container mà bạn muốn sẵn sàng ở cổng cục bộ.</td>
+<td><code>"forwardPorts": [3000]</code></td>
+</tr>
+<tr class="even">
+<td><code>portsAttributes</code></td>
+<td>-</td>
+<td>Đặt các thuộc tính mặc định cho các cổng được chuyển tiếp cụ thể.</td>
+<td><code>"portsAttributes": { "3000": { "label": "Hello Remote World", "onAutoForward": "notify" } }</code></td>
+</tr>
+<tr class="odd">
+<td><code>postCreateCommand</code></td>
+<td>-</td>
+<td>Một chuỗi lệnh hoặc danh sách đối số lệnh để chạy sau khi container được tạo.</td>
+<td><code>"postCreateCommand": "yarn install"</code></td>
+</tr>
+<tr class="even">
+<td><code>remoteUser</code></td>
+<td>-</td>
+<td>Ghi đè người dùng mà VS Code chạy như trong container (cùng với các tiến trình con). Mặc định là <code>containerUser</code>.</td>
+<td><code>"remoteUser": "root"</code></td>
+</tr>
+<tr class="odd">
+<td><code>features</code></td>
+<td>-</td>
+<td>Một đối tượng chứa các tính năng cụ thể của Dev Container để thêm vào.</td>
+<td><code>"features": { "my-feature": true }</code></td>
+</tr>
+<tr class="even">
+<td><code>build</code></td>
+<td><code>dockerfile</code>, <code>context</code></td>
+<td>Đối tượng mô tả cách xây dựng Dev Container từ Dockerfile hoặc Docker Compose.</td>
+<td><code>"build": { "dockerfile": "Dockerfile", "context": ".." }</code></td>
+</tr>
+<tr class="odd">
+<td><code>runArgs</code></td>
+<td>-</td>
+<td>Mảng các đối số thêm vào lệnh <code>docker run</code> khi khởi chạy container.</td>
+<td><code>"runArgs": ["--user", "1000:1000"]</code></td>
+</tr>
+<tr class="even">
+<td><code>postCreateCommand</code></td>
+<td>-</td>
+<td>Một chuỗi lệnh hoặc danh sách đối số lệnh để chạy sau khi container được tạo.</td>
+<td><code>"postCreateCommand": "yarn install"</code></td>
+</tr>
+<tr class="odd">
+<td><code>shutdownAction</code></td>
+<td><code>stopContainer</code>, <code>none</code></td>
+<td>Hành động mà VS Code sẽ thực hiện khi bạn đóng một cửa sổ hoặc tab trong đó Dev Container đang chạy.</td>
+<td><code>"shutdownAction": "stopContainer"</code></td>
+</tr>
+<tr class="even">
+<td><code>overrideCommand</code></td>
+<td>-</td>
+<td>Một lệnh hoặc danh sách đối số lệnh để thay thế lệnh mặc định khi khởi chạy container.</td>
+<td><code>"overrideCommand": "npm start"</code></td>
+</tr>
+<tr class="odd">
+<td><code>remoteUser</code></td>
+<td>-</td>
+<td>Ghi đè người dùng mà VS Code chạy như trong container (cùng với các tiến trình con). Mặc định là <code>containerUser</code>.</td>
+<td><code>"remoteUser": "root"</code></td>
+</tr>
+<tr class="even">
+<td><code>workspaceFolder</code></td>
+<td><code>/workspace</code></td>
+<td>Đường dẫn trong container mà mọi hoạt động của VS Code sẽ được thực hiện trong đó.</td>
+<td><code>"workspaceFolder": "/workspace"</code></td>
+</tr>
+<tr class="odd">
+<td><code>workspaceMount</code></td>
+<td>-</td>
+<td>Cấu hình mount của thư mục workspace từ máy host vào container.</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Chú Ý:</strong> - Mỗi tùy chọn cụ thể của thuộc tính được liệt kê trong cột “Tùy Chọn” của bảng. - Các giải thích chi tiết cung cấp hiểu biết về mục đích và cách sử dụng mỗi tùy chọn cụ thể. - Các ví dụ minh họa giúp làm rõ cách áp dụng mỗi tùy chọn trong một ngữ cảnh thực tế.</p>
+</section>
+<section id="chi-tiết-cụ-thể-của-mỗi-thuộc-tính" class="level3">
+<h3 class="anchored" data-anchor-id="chi-tiết-cụ-thể-của-mỗi-thuộc-tính">Chi Tiết Cụ Thể Của Mỗi Thuộc Tính:</h3>
+<section id="customizations" class="level4">
+<h4 class="anchored" data-anchor-id="customizations">1. <code>customizations</code></h4>
+<ul>
+<li><strong><code>vscode</code></strong>:
+<ul>
+<li><em><code>settings</code>:</em> Cấu hình settings.json cho VS Code bên trong container.
+<ul>
+<li><em>Ví Dụ:</em> <code>{ "settings": { "python.linting.enabled": true } }</code></li>
+</ul></li>
+<li><em><code>extensions</code>:</em> Danh sách các extension ID cần cài đặt trong VS Code.
+<ul>
+<li><em>Ví Dụ:</em> <code>["ms-python.python"]</code></li>
+</ul></li>
+</ul></li>
+</ul>
+</section>
+<section id="settings" class="level4">
+<h4 class="anchored" data-anchor-id="settings">2. <code>settings</code></h4>
+<ul>
+<li><em><code>&lt;setting&gt;</code>:</em> Các thuộc tính cụ thể của settings.json.
+<ul>
+<li><em>Ví Dụ:</em> <code>{ "terminal.integrated.defaultProfile.linux": "bash" }</code></li>
+</ul></li>
+</ul>
+</section>
+<section id="extensions" class="level4">
+<h4 class="anchored" data-anchor-id="extensions">3. <code>extensions</code></h4>
+<ul>
+<li><em><code>&lt;extension&gt;</code>:</em> ID của extension cần được cài đặt.
+<ul>
+<li><em>Ví Dụ:</em> <code>["streetsidesoftware.code-spell-checker"]</code></li>
+</ul></li>
+</ul>
+</section>
+<section id="forwardports" class="level4">
+<h4 class="anchored" data-anchor-id="forwardports">4. <code>forwardPorts</code></h4>
+<ul>
+<li><em><code>&lt;port&gt;</code>:</em> Cổng bên trong container mà bạn muốn sẵn sàng ở cổng cục bộ.
+<ul>
+<li><em>Ví Dụ:</em> <code>[3000, 5000]</code></li>
+</ul></li>
+</ul>
+</section>
+<section id="portsattributes" class="level4">
+<h4 class="anchored" data-anchor-id="portsattributes">5. <code>portsAttributes</code></h4>
+<ul>
+<li><em><code>&lt;port&gt;</code>:</em>
+<ul>
+<li><strong><code>label</code></strong>: Nhãn mô tả cho cổng được chuyển tiếp.
+<ul>
+<li><em>Ví Dụ:</em> <code>"Hello Remote World"</code></li>
+</ul></li>
+<li><strong><code>onAutoForward</code></strong>: Hành động khi cổng được chuyển tiếp tự động (notify/silent).
+<ul>
+<li><em>Ví Dụ:</em> <code>"notify"</code></li>
+</ul></li>
+</ul></li>
+</ul>
+</section>
+<section id="postcreatecommand" class="level4">
+<h4 class="anchored" data-anchor-id="postcreatecommand">6. <code>postCreateCommand</code></h4>
+<ul>
+<li><em><code>&lt;command&gt;</code>:</em> Chuỗi lệnh hoặc danh sách đối số lệnh để chạy sau khi container được tạo.
+<ul>
+<li><em>Ví Dụ:</em> <code>"yarn install"</code></li>
+</ul></li>
+</ul>
+</section>
+</section>
+<section id="set-docker-compose-project-name" class="level3">
+<h3 class="anchored" data-anchor-id="set-docker-compose-project-name">1. <strong>Set Docker Compose Project Name</strong></h3>
+<p><strong>Giải Thích Ngắn Gọn:</strong> - Xác định tên dự án cho Docker Compose giúp phân biệt giữa các tài nguyên được tạo bởi cùng một file <code>docker-compose.yml</code> khi chúng chia sẻ không gian tên.</p>
+<p><strong>Ví Dụ:</strong></p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker-compose</span> <span class="at">-p</span> myproject up <span class="at">-d</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="connect-to-multiple-containers" class="level3">
+<h3 class="anchored" data-anchor-id="connect-to-multiple-containers">2. <strong>Connect to Multiple Containers</strong></h3>
+<p><strong>Giải Thích Ngắn Gọn:</strong> - Liên kết nhiều container cho phép chúng giao tiếp và làm việc cùng nhau, tạo ra một môi trường ứng dụng phức tạp với nhiều thành phần.</p>
+<p><strong>Ví Dụ:</strong></p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">services</span><span class="kw">:</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">web</span><span class="kw">:</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">image</span><span class="kw">:</span><span class="at"> nginx</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">api</span><span class="kw">:</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">image</span><span class="kw">:</span><span class="at"> myapi</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">database</span><span class="kw">:</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">image</span><span class="kw">:</span><span class="at"> postgres</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="configure-separate-containers" class="level3">
+<h3 class="anchored" data-anchor-id="configure-separate-containers">3. <strong>Configure Separate Containers</strong></h3>
+<p><strong>Giải Thích Ngắn Gọn:</strong> - Cấu hình các container riêng lẻ cho phép định rõ các thiết lập đặc biệt cho từng dịch vụ, giảm sự phụ thuộc giữa chúng.</p>
+<p><strong>Ví Dụ:</strong></p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">services</span><span class="kw">:</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">web</span><span class="kw">:</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">image</span><span class="kw">:</span><span class="at"> nginx</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">ports</span><span class="kw">:</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="st">"80:80"</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">api</span><span class="kw">:</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">image</span><span class="kw">:</span><span class="at"> myapi</span></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">environment</span><span class="kw">:</span></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> DATABASE_URL=mydatabase</span></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">database</span><span class="kw">:</span></span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">image</span><span class="kw">:</span><span class="at"> postgres</span></span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">volumes</span><span class="kw">:</span></span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> ./data:/var/lib/postgresql/data</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="develop-on-a-remote-docker-host" class="level3">
+<h3 class="anchored" data-anchor-id="develop-on-a-remote-docker-host">4. <strong>Develop on a Remote Docker Host</strong></h3>
+<p><strong>Giải Thích Ngắn Gọn:</strong> - Phát triển trên một Docker host từ xa giúp lập trình viên làm việc trên môi trường mô phỏng, giả lập môi trường sản xuất một cách chính xác.</p>
+<p><strong>Ví Dụ:</strong></p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker-compose</span> <span class="at">-H</span> ssh://user@remote-host up <span class="at">-d</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="ví-dụ-tổng-hợp-cho-cả-bốn-khái-niệm-trên" class="level3">
+<h3 class="anchored" data-anchor-id="ví-dụ-tổng-hợp-cho-cả-bốn-khái-niệm-trên">5. <strong>Ví Dụ Tổng Hợp Cho Cả Bốn Khái Niệm Trên:</strong></h3>
+<div class="sourceCode" id="cb10"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">version</span><span class="kw">:</span><span class="at"> </span><span class="st">'3'</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="fu">services</span><span class="kw">:</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">frontend</span><span class="kw">:</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">image</span><span class="kw">:</span><span class="at"> frontend</span></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">networks</span><span class="kw">:</span></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> mynetwork</span></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">backend</span><span class="kw">:</span></span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">image</span><span class="kw">:</span><span class="at"> backend</span></span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">networks</span><span class="kw">:</span></span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> mynetwork</span></span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">database</span><span class="kw">:</span></span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">image</span><span class="kw">:</span><span class="at"> postgres</span></span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">networks</span><span class="kw">:</span></span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> mynetwork</span></span>
+<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">volumes</span><span class="kw">:</span></span>
+<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> ./data:/var/lib/postgresql/data</span></span>
+<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a><span class="fu">networks</span><span class="kw">:</span></span>
+<span id="cb10-20"><a href="#cb10-20" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">mynetwork</span><span class="kw">:</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ul>
+<li>Dự án Docker Compose có tên là “myproject”.</li>
+<li>Kết nối ba container (frontend, backend, database) trên một mạng có tên “mynetwork”.</li>
+<li>Mỗi container có cấu hình riêng với cổng, biến môi trường, và thư mục dữ liệu.</li>
+<li>Dự án cho phép phát triển cả ba container trên một Docker host từ xa nếu cần thiết.</li>
+</ul>
+</section>
+</section>
+<section id="dockerfile-và-các-lệnh-phổ-biến" class="level2">
+<h2 class="anchored" data-anchor-id="dockerfile-và-các-lệnh-phổ-biến">Dockerfile và Các Lệnh Phổ Biến</h2>
+<section id="dockerfile-là-gì" class="level3">
+<h3 class="anchored" data-anchor-id="dockerfile-là-gì">Dockerfile Là Gì?</h3>
+<p>Dockerfile là một tệp văn bản chứa một loạt các lệnh, mỗi lệnh đại diện cho một bước trong quá trình xây dựng một hình ảnh Docker. Nó mô tả cách một hình ảnh nên được xây dựng từ các thành phần khác nhau và cài đặt các phần mềm cần thiết.</p>
+</section>
+<section id="các-lệnh-phổ-biến-trong-dockerfile" class="level3">
+<h3 class="anchored" data-anchor-id="các-lệnh-phổ-biến-trong-dockerfile">Các Lệnh Phổ Biến trong Dockerfile:</h3>
+<table class="table">
+<colgroup>
+<col style="width: 14%">
+<col style="width: 52%">
+<col style="width: 32%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Lệnh</th>
+<th>Mô Tả</th>
+<th>Ví Dụ</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>FROM</code></td>
+<td>Chọn hình ảnh cơ sở để bắt đầu xây dựng.</td>
+<td><code>FROM ubuntu:latest</code></td>
+</tr>
+<tr class="even">
+<td><code>COPY</code></td>
+<td>Sao chép các tệp từ máy host vào hình ảnh.</td>
+<td><code>COPY app.py /app/</code></td>
+</tr>
+<tr class="odd">
+<td><code>ADD</code></td>
+<td>Sao chép các tệp từ máy host hoặc URL vào hình ảnh.</td>
+<td><code>ADD https://example.com/file.txt /app/</code></td>
+</tr>
+<tr class="even">
+<td><code>RUN</code></td>
+<td>Thực hiện các lệnh trong môi trường hình ảnh và tạo lớp mới.</td>
+<td><code>RUN apt-get update &amp;&amp; apt-get install -y curl</code></td>
+</tr>
+<tr class="odd">
+<td><code>WORKDIR</code></td>
+<td>Đặt thư mục làm việc cho các lệnh sau đó.</td>
+<td><code>WORKDIR /app</code></td>
+</tr>
+<tr class="even">
+<td><code>EXPOSE</code></td>
+<td>Mô tả các cổng mà ứng dụng sẽ lắng nghe khi chạy.</td>
+<td><code>EXPOSE 80/tcp</code></td>
+</tr>
+<tr class="odd">
+<td><code>ENV</code></td>
+<td>Đặt các biến môi trường cho hình ảnh.</td>
+<td><code>ENV NODE_ENV production</code></td>
+</tr>
+<tr class="even">
+<td><code>CMD</code> hoặc <code>ENTRYPOINT</code></td>
+<td>Xác định lệnh mặc định khi container được chạy.</td>
+<td><code>CMD ["python", "app.py"]</code></td>
+</tr>
+<tr class="odd">
+<td><code>ARG</code></td>
+<td>Định nghĩa các biến mà người dùng có thể truyền vào lúc xây dựng.</td>
+<td><code>ARG version=latest</code></td>
+</tr>
+<tr class="even">
+<td><code>LABEL</code></td>
+<td>Thêm các metadata (nhãn) vào hình ảnh.</td>
+<td><code>LABEL maintainer="admin@example.com"</code></td>
+</tr>
+<tr class="odd">
+<td><code>VOLUME</code></td>
+<td>Chỉ định các thư mục làm thư mục volume và được dùng để lưu trữ dữ liệu.</td>
+<td><code>VOLUME /data</code></td>
+</tr>
+<tr class="even">
+<td><code>RUN</code>, <code>CMD</code>, <code>ENTRYPOINT</code></td>
+<td>Các lệnh có thể sử dụng dưới dạng shell hoặc mảng đối số.</td>
+<td><code>RUN apt-get update &amp;&amp; apt-get install -y curl</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Lưu Ý:</strong> - Một Dockerfile thường bắt đầu bằng lệnh <code>FROM</code>. - Các lệnh được thực thi theo thứ tự từ trên xuống dưới trong Dockerfile. - Có thể kết hợp nhiều lệnh trong một dòng bằng cách sử dụng <code>&amp;&amp;</code>. - Các lệnh <code>CMD</code> và <code>ENTRYPOINT</code> giúp xác định hành động mặc định khi container chạy.</p>
+<p>Dockerfile là công cụ quan trọng để xây dựng hình ảnh Docker và tự động hóa quy trình triển khai ứng dụng.</p>
+</section>
+</section>
+<section id="docker-compose-giải-thích-lệnh-và-thuộc-tính" class="level2">
+<h2 class="anchored" data-anchor-id="docker-compose-giải-thích-lệnh-và-thuộc-tính">Docker Compose: Giải Thích Lệnh và Thuộc Tính</h2>
+<p>Docker Compose là công cụ giúp quản lý và triển khai ứng dụng đa-container trong môi trường Docker. Dưới đây là một bảng tổng hợp các lệnh và thuộc tính quan trọng trong Docker Compose:</p>
+<table class="table">
+<colgroup>
+<col style="width: 15%">
+<col style="width: 15%">
+<col style="width: 8%">
+<col style="width: 31%">
+<col style="width: 29%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Lệnh</th>
+<th>Thuộc Tính</th>
+<th>Kiểu Dữ Liệu</th>
+<th>Mô Tả Chi Tiết</th>
+<th>Ví Dụ</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>docker-compose up</code></td>
+<td>-</td>
+<td>-</td>
+<td>Chạy các dịch vụ được định nghĩa trong file <code>docker-compose.yml</code>.</td>
+<td><code>docker-compose up</code></td>
+</tr>
+<tr class="even">
+<td><code>docker-compose down</code></td>
+<td>-</td>
+<td>-</td>
+<td>Dừng và xóa tất cả các container, mạng và dữ liệu đã tạo.</td>
+<td><code>docker-compose down</code></td>
+</tr>
+<tr class="odd">
+<td><code>docker-compose ps</code></td>
+<td>-</td>
+<td>-</td>
+<td>Liệt kê các container đang chạy.</td>
+<td><code>docker-compose ps</code></td>
+</tr>
+<tr class="even">
+<td><code>docker-compose exec</code></td>
+<td>-</td>
+<td>-</td>
+<td>Thực hiện lệnh bên trong một container.</td>
+<td><code>docker-compose exec webserver ls</code></td>
+</tr>
+<tr class="odd">
+<td><code>docker-compose logs</code></td>
+<td>-</td>
+<td>-</td>
+<td>Xem logs của các dịch vụ.</td>
+<td><code>docker-compose logs</code></td>
+</tr>
+<tr class="even">
+<td><code>docker-compose build</code></td>
+<td>-</td>
+<td>-</td>
+<td>Xây dựng lại các images của dịch vụ.</td>
+<td><code>docker-compose build</code></td>
+</tr>
+</tbody>
+</table>
+<section id="thuộc-tính-của-docker-compose.yml" class="level4">
+<h4 class="anchored" data-anchor-id="thuộc-tính-của-docker-compose.yml">Thuộc Tính Của <code>docker-compose.yml</code>:</h4>
+<table class="table">
+<colgroup>
+<col style="width: 18%">
+<col style="width: 9%">
+<col style="width: 37%">
+<col style="width: 34%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Thuộc Tính</th>
+<th>Kiểu Dữ Liệu</th>
+<th>Mô Tả Chi Tiết</th>
+<th>Ví Dụ</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>version</code></td>
+<td>-</td>
+<td>Phiên bản của Docker Compose.</td>
+<td><code>version: '3'</code></td>
+</tr>
+<tr class="even">
+<td><code>services</code></td>
+<td>-</td>
+<td>Định nghĩa các dịch vụ, mỗi dịch vụ có các cài đặt riêng.</td>
+<td><code>services: web, db</code></td>
+</tr>
+<tr class="odd">
+<td><code>image</code></td>
+<td>-</td>
+<td>Tên hình ảnh của dịch vụ.</td>
+<td><code>image: nginx:latest</code></td>
+</tr>
+<tr class="even">
+<td><code>build</code></td>
+<td>-</td>
+<td>Xây dựng dịch vụ từ Dockerfile trong thư mục hiện tại hoặc chỉ định.</td>
+<td><code>build: ./web</code></td>
+</tr>
+<tr class="odd">
+<td><code>ports</code></td>
+<td>-</td>
+<td>Chuyển tiếp cổng giữa máy host và container.</td>
+<td><code>ports: - "8080:80"</code></td>
+</tr>
+<tr class="even">
+<td><code>volumes</code></td>
+<td>-</td>
+<td>Mount thư mục hoặc volume giữa máy host và container.</td>
+<td><code>volumes: - ./data:/app/data</code></td>
+</tr>
+<tr class="odd">
+<td><code>environment</code></td>
+<td>-</td>
+<td>Đặt biến môi trường cho dịch vụ.</td>
+<td><code>environment: - DEBUG=True</code></td>
+</tr>
+<tr class="even">
+<td><code>depends_on</code></td>
+<td>-</td>
+<td>Xác định các dịch vụ phụ thuộc cần chạy trước.</td>
+<td><code>depends_on: - db</code></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="ví-dụ-đầy-đủ-docker-compose.yml" class="level4">
+<h4 class="anchored" data-anchor-id="ví-dụ-đầy-đủ-docker-compose.yml">Ví Dụ Đầy Đủ <code>docker-compose.yml</code>:</h4>
+<div class="sourceCode" id="cb11"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">version</span><span class="kw">:</span><span class="at"> </span><span class="st">'3'</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="fu">services</span><span class="kw">:</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">web</span><span class="kw">:</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">image</span><span class="kw">:</span><span class="at"> nginx:latest</span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">ports</span><span class="kw">:</span></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> </span><span class="st">"8080:80"</span></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">volumes</span><span class="kw">:</span></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> ./web:/app</span></span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">environment</span><span class="kw">:</span></span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> DEBUG=True</span></span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">db</span><span class="kw">:</span></span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">image</span><span class="kw">:</span><span class="at"> postgres:latest</span></span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">volumes</span><span class="kw">:</span></span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> /var/lib/postgresql/data</span></span>
+<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">environment</span><span class="kw">:</span></span>
+<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> POSTGRES_PASSWORD=mysecretpassword</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ul>
+<li>Định nghĩa hai dịch vụ: <code>web</code> (nginx) và <code>db</code> (PostgreSQL).</li>
+<li>Dịch vụ <code>web</code> sử dụng hình ảnh nginx, chuyển tiếp cổng 8080 từ máy host vào cổng 80 của container, mount thư mục <code>./web</code> vào <code>/app</code>, và đặt biến môi trường DEBUG là True.</li>
+<li>Dịch vụ <code>db</code> sử dụng hình ảnh PostgreSQL, mount thư mục dữ liệu vào <code>/var/lib/postgresql/data</code>, và đặt mật khẩu PostgreSQL.</li>
+</ul>
 
 
+</section>
+</section>
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
