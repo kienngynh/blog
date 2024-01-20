@@ -1,0 +1,11 @@
+---
+title: "SQL Tutorial"
+author: "Kevil Nguyen"
+date: "2023-12-07"
+categories: [tutorial, code, notebook]
+---
+
+# SQL Tutorial
+
+
+Welcome to my SQL learning journal! In this blog, we will embark on an exciting journey to explore the world of Structured Query Language (SQL). SQL is a powerful tool used for managing and manipulating data in relational databases. Whether you're a beginner or an experienced data professional, this blog will provide you with valuable insights, tips, and tutorials to enhance your SQL skills. So, let's dive in and unlock the potential of SQL together!

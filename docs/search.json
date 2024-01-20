@@ -7,11 +7,11 @@
     "text": "Hi hi, mình là Kiên"
   },
   {
-    "objectID": "index.html",
-    "href": "index.html",
-    "title": "Blog",
+    "objectID": "posts/sql-tutorial/index.html",
+    "href": "posts/sql-tutorial/index.html",
+    "title": "SQL Tutorial",
     "section": "",
-    "text": "Docker Tutorial\n\n\n\n\n\n\n\ntutorial\n\n\ncode\n\n\nnotebook\n\n\n\n\n\n\n\n\n\n\n\nDec 7, 2023\n\n\nKevil Nguyen\n\n\n\n\n\n\n\n\n\n\n\n\n\nWelcome To My Blog\n\n\n\n\n\n\n\nnews\n\n\n\n\n\n\n\n\n\n\n\nDec 4, 2023\n\n\nKevil Nguyen\n\n\n\n\n\n\nNo matching items"
+    "text": "SQL Tutorial\nWelcome to my SQL learning journal! In this blog, we will embark on an exciting journey to explore the world of Structured Query Language (SQL). SQL is a powerful tool used for managing and manipulating data in relational databases. Whether you’re a beginner or an experienced data professional, this blog will provide you with valuable insights, tips, and tutorials to enhance your SQL skills. So, let’s dive in and unlock the potential of SQL together!"
   },
   {
     "objectID": "posts/docker-tutorial/index.html",
@@ -70,10 +70,10 @@
     "text": "Chào mừng ghé thăm blog của Kiên, đây là bài đăng đầu tiên"
   },
   {
-    "objectID": "sql-tutorial/index.html",
-    "href": "sql-tutorial/index.html",
-    "title": "SQL Tutorial",
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Blog",
     "section": "",
-    "text": "SQL Tutorial"
+    "text": "Docker Tutorial\n\n\n\n\n\n\n\ntutorial\n\n\ncode\n\n\nnotebook\n\n\n\n\n\n\n\n\n\n\n\nDec 7, 2023\n\n\nKevil Nguyen\n\n\n\n\n\n\n\n\n\n\n\n\n\nSQL Tutorial\n\n\n\n\n\n\n\ntutorial\n\n\ncode\n\n\nnotebook\n\n\n\n\n\n\n\n\n\n\n\nDec 7, 2023\n\n\nKevil Nguyen\n\n\n\n\n\n\n\n\n\n\n\n\n\nWelcome To My Blog\n\n\n\n\n\n\n\nnews\n\n\n\n\n\n\n\n\n\n\n\nDec 4, 2023\n\n\nKevil Nguyen\n\n\n\n\n\n\nNo matching items"
   }
 ]
