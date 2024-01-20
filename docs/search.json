@@ -7,6 +7,13 @@
     "text": "Hi hi, mình là Kiên"
   },
   {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Blog",
+    "section": "",
+    "text": "Docker Tutorial\n\n\n\n\n\n\n\ntutorial\n\n\ncode\n\n\nnotebook\n\n\n\n\n\n\n\n\n\n\n\nDec 7, 2023\n\n\nKevil Nguyen\n\n\n\n\n\n\n\n\n\n\n\n\n\nWelcome To My Blog\n\n\n\n\n\n\n\nnews\n\n\n\n\n\n\n\n\n\n\n\nDec 4, 2023\n\n\nKevil Nguyen\n\n\n\n\n\n\nNo matching items"
+  },
+  {
     "objectID": "posts/docker-tutorial/index.html",
     "href": "posts/docker-tutorial/index.html",
     "title": "Docker Tutorial",
@@ -56,17 +63,17 @@
     "text": "Docker Compose là công cụ giúp quản lý và triển khai ứng dụng đa-container trong môi trường Docker. Dưới đây là một bảng tổng hợp các lệnh và thuộc tính quan trọng trong Docker Compose:\n\n\n\n\n\n\n\n\n\n\nLệnh\nThuộc Tính\nKiểu Dữ Liệu\nMô Tả Chi Tiết\nVí Dụ\n\n\n\n\ndocker-compose up\n-\n-\nChạy các dịch vụ được định nghĩa trong file docker-compose.yml.\ndocker-compose up\n\n\ndocker-compose down\n-\n-\nDừng và xóa tất cả các container, mạng và dữ liệu đã tạo.\ndocker-compose down\n\n\ndocker-compose ps\n-\n-\nLiệt kê các container đang chạy.\ndocker-compose ps\n\n\ndocker-compose exec\n-\n-\nThực hiện lệnh bên trong một container.\ndocker-compose exec webserver ls\n\n\ndocker-compose logs\n-\n-\nXem logs của các dịch vụ.\ndocker-compose logs\n\n\ndocker-compose build\n-\n-\nXây dựng lại các images của dịch vụ.\ndocker-compose build\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nThuộc Tính\nKiểu Dữ Liệu\nMô Tả Chi Tiết\nVí Dụ\n\n\n\n\nversion\n-\nPhiên bản của Docker Compose.\nversion: '3'\n\n\nservices\n-\nĐịnh nghĩa các dịch vụ, mỗi dịch vụ có các cài đặt riêng.\nservices: web, db\n\n\nimage\n-\nTên hình ảnh của dịch vụ.\nimage: nginx:latest\n\n\nbuild\n-\nXây dựng dịch vụ từ Dockerfile trong thư mục hiện tại hoặc chỉ định.\nbuild: ./web\n\n\nports\n-\nChuyển tiếp cổng giữa máy host và container.\nports: - \"8080:80\"\n\n\nvolumes\n-\nMount thư mục hoặc volume giữa máy host và container.\nvolumes: - ./data:/app/data\n\n\nenvironment\n-\nĐặt biến môi trường cho dịch vụ.\nenvironment: - DEBUG=True\n\n\ndepends_on\n-\nXác định các dịch vụ phụ thuộc cần chạy trước.\ndepends_on: - db\n\n\n\n\n\n\nversion: '3'\nservices:\n  web:\n    image: nginx:latest\n    ports:\n      - \"8080:80\"\n    volumes:\n      - ./web:/app\n    environment:\n      - DEBUG=True\n  db:\n    image: postgres:latest\n    volumes:\n      - /var/lib/postgresql/data\n    environment:\n      - POSTGRES_PASSWORD=mysecretpassword\n\nĐịnh nghĩa hai dịch vụ: web (nginx) và db (PostgreSQL).\nDịch vụ web sử dụng hình ảnh nginx, chuyển tiếp cổng 8080 từ máy host vào cổng 80 của container, mount thư mục ./web vào /app, và đặt biến môi trường DEBUG là True.\nDịch vụ db sử dụng hình ảnh PostgreSQL, mount thư mục dữ liệu vào /var/lib/postgresql/data, và đặt mật khẩu PostgreSQL."
   },
   {
-    "objectID": "index.html",
-    "href": "index.html",
-    "title": "Blog",
-    "section": "",
-    "text": "Docker Tutorial\n\n\n\n\n\n\n\ntutorial\n\n\ncode\n\n\nnotebook\n\n\n\n\n\n\n\n\n\n\n\nDec 7, 2023\n\n\nKevil Nguyen\n\n\n\n\n\n\n\n\n\n\n\n\n\nWelcome To My Blog\n\n\n\n\n\n\n\nnews\n\n\n\n\n\n\n\n\n\n\n\nDec 4, 2023\n\n\nKevil Nguyen\n\n\n\n\n\n\nNo matching items"
-  },
-  {
     "objectID": "posts/welcome/index.html",
     "href": "posts/welcome/index.html",
     "title": "Welcome To My Blog",
     "section": "",
     "text": "Chào mừng ghé thăm blog của Kiên, đây là bài đăng đầu tiên"
+  },
+  {
+    "objectID": "sql-tutorial/index.html",
+    "href": "sql-tutorial/index.html",
+    "title": "SQL Tutorial",
+    "section": "",
+    "text": "SQL Tutorial"
   }
 ]
