@@ -1,0 +1,1389 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.4.549">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Kevil Nguyen">
+<meta name="dcterms.date" content="2022-02-28">
+
+<title>Blog - My Rust Book</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="../../styles.css">
+</head>
+
+<body class="nav-fixed fullcontent">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top quarto-banner">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">Blog</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../about.html"> 
+<span class="menu-text">About</span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/kienngynh"> <i class="bi bi-github" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://linkedin.com/in/kienbk60"> <i class="bi bi-linkedin" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+          <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<header id="title-block-header" class="quarto-title-block default page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-body">
+      <h1 class="title">My Rust Book</h1>
+                                <div class="quarto-categories">
+                <div class="quarto-category">tutorial</div>
+                <div class="quarto-category">code</div>
+                <div class="quarto-category">notebook</div>
+              </div>
+                  </div>
+  </div>
+    
+  
+  <div class="quarto-title-meta">
+
+      <div>
+      <div class="quarto-title-meta-heading">Author</div>
+      <div class="quarto-title-meta-contents">
+               <p>Kevil Nguyen </p>
+            </div>
+    </div>
+      
+      <div>
+      <div class="quarto-title-meta-heading">Published</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">February 28, 2022</p>
+      </div>
+    </div>
+    
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    
+<!-- main -->
+<main class="content quarto-banner-title-block" id="quarto-document-content">
+
+
+
+
+
+<section id="my-rust-book" class="level1">
+<h1>My Rust Book</h1>
+<p>Blog này sẽ tổng hợp lại những kiến thức và từ khoá quan trọng trong ngôn ngữ Rust</p>
+<section id="biến-và-tính-bất-biến" class="level2">
+<h2 class="anchored" data-anchor-id="biến-và-tính-bất-biến">Biến và Tính bất biến</h2>
+<p><strong>Bảng tổng hợp:</strong></p>
+<table class="table">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Chủ đề</th>
+<th>Tóm tắt</th>
+<th>Từ khóa</th>
+<th>Ví dụ</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Biến</td>
+<td>Lưu trữ giá trị</td>
+<td><code>let</code>, <code>mut</code></td>
+<td><code>let x = 5;</code></td>
+</tr>
+<tr class="even">
+<td>Tính bất biến</td>
+<td>Giá trị không thể thay đổi sau khi gán</td>
+<td><code>let</code></td>
+<td><code>let x = 5; // x = 6 sẽ gây lỗi</code></td>
+</tr>
+<tr class="odd">
+<td>Tính biến đổi</td>
+<td>Giá trị có thể thay đổi sau khi gán</td>
+<td><code>mut</code></td>
+<td><code>let mut x = 5; x = 6;</code></td>
+</tr>
+<tr class="even">
+<td>Hằng</td>
+<td>Giá trị bất biến, được đặt tên</td>
+<td><code>const</code></td>
+<td><code>const PI: f32 = 3.14159;</code></td>
+</tr>
+<tr class="odd">
+<td>Bóng biến</td>
+<td>Tạo biến mới với cùng tên trong phạm vi</td>
+<td><code>let</code></td>
+<td><code>let x = 5; let x = x + 1;</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>So sánh với Python/C#:</strong></p>
+<ul>
+<li>Python và C# sử dụng garbage collection để quản lý bộ nhớ, trong khi Rust sử dụng ownership để đảm bảo an toàn bộ nhớ và tránh lỗi memory leak.</li>
+<li>Rust khuyến khích sử dụng tính bất biến theo mặc định để đơn giản hóa code và tránh lỗi, nhưng vẫn cho phép sử dụng tính biến đổi khi cần thiết.</li>
+</ul>
+<p><strong>Ưu nhược điểm:</strong></p>
+<ul>
+<li><strong>Tính bất biến:</strong>
+<ul>
+<li>Ưu điểm: An toàn bộ nhớ, dễ hiểu, tránh lỗi.</li>
+<li>Nhược điểm: Khó quen hơn so với ngôn ngữ có garbage collection.</li>
+</ul></li>
+<li><strong>Tính biến đổi:</strong>
+<ul>
+<li>Ưu điểm: Linh hoạt hơn trong một số trường hợp.</li>
+<li>Nhược điểm: Cần chú ý để tránh lỗi và phức tạp hóa code.</li>
+</ul></li>
+</ul>
+<p><strong>Ứng dụng:</strong></p>
+<ul>
+<li>Hằng: Lưu trữ các giá trị cố định như PI, tốc độ ánh sáng.</li>
+<li>Biến bất biến: Lưu trữ các giá trị không cần thay đổi, đơn giản hóa code.</li>
+<li>Biến biến đổi: Lưu trữ các giá trị cần thay đổi trong quá trình thực thi.</li>
+<li>Bóng biến: Tạo biến cục bộ với cùng tên, giúp tránh xung đột tên.</li>
+</ul>
+<p><strong>Kết luận:</strong></p>
+<p>Rust cung cấp các tính năng về biến và tính bất biến giúp viết code an toàn, hiệu quả và dễ hiểu. Hiểu rõ các khái niệm này là nền tảng quan trọng để học tập và làm việc với Rust.</p>
+</section>
+<section id="kiểu-dữ-liệu" class="level2">
+<h2 class="anchored" data-anchor-id="kiểu-dữ-liệu">Kiểu dữ liệu</h2>
+<p><strong>Điểm chính:</strong></p>
+<ul>
+<li><strong>Mọi giá trị trong Rust đều có kiểu dữ liệu.</strong> Điều này cho trình biên dịch biết loại dữ liệu nào nó đang làm việc và cho phép đảm bảo an toàn kiểu.</li>
+<li><strong>Rust là ngôn ngữ có kiểu dữ liệu tĩnh,</strong> nghĩa là trình biên dịch phải biết kiểu của tất cả các biến tại thời điểm biên dịch.</li>
+<li><strong>Kiểu dữ liệu có thể được chia thành hai loại:</strong> kiểu đơn giản và kiểu phức tạp.</li>
+</ul>
+<p><strong>Kiểu đơn giản:</strong></p>
+<ul>
+<li><strong>Biểu thị các giá trị đơn lẻ.</strong></li>
+<li><strong>Bốn kiểu chính:</strong>
+<ul>
+<li><strong>Số nguyên:</strong> Biểu thị số nguyên (ví dụ: <code>i32</code>, <code>u64</code>).</li>
+<li><strong>Số thực:</strong> Biểu thị số có phần thập phân (ví dụ: <code>f32</code>, <code>f64</code>).</li>
+<li><strong>Boolean:</strong> Biểu thị giá trị true hoặc false (<code>bool</code>).</li>
+<li><strong>Ký tự:</strong> Biểu thị ký tự đơn lẻ (<code>char</code>).</li>
+</ul></li>
+</ul>
+<p><strong>Kiểu phức tạp:</strong></p>
+<ul>
+<li><strong>Nhóm nhiều giá trị thành một đơn vị.</strong></li>
+<li><strong>Hai kiểu cơ bản:</strong>
+<ul>
+<li><strong>Tuple:</strong> Các bộ sưu tập có thứ tự, độ dài cố định của các giá trị có thể có kiểu khác nhau (ví dụ: <code>(500, 6.4, 1)</code>).</li>
+<li><strong>Mảng:</strong> Các bộ sưu tập có độ dài cố định của các giá trị có cùng kiểu (ví dụ: <code>[1, 2, 3, 4, 5]</code>).</li>
+</ul></li>
+</ul>
+<p><strong>Ghi chú bổ sung:</strong></p>
+<ul>
+<li>Rust áp dụng an toàn kiểu, giúp ngăn chặn lỗi bộ nhớ.</li>
+<li>Tràn số nguyên có thể xảy ra nếu phép toán vượt quá phạm vi của kiểu đã chọn.</li>
+<li>Mảng hữu ích cho dữ liệu có kích thước cố định trên ngăn xếp, trong khi vectơ (được thảo luận trong Chương 8) linh hoạt hơn và có thể tăng hoặc giảm kích thước.</li>
+</ul>
+<p><strong>Tóm lại, hiểu rõ kiểu dữ liệu là điều cần thiết để viết mã Rust chính xác và hiệu quả.</strong></p>
+</section>
+<section id="functions-xây-dựng-các-khối-mã-tái-sử-dụng" class="level2">
+<h2 class="anchored" data-anchor-id="functions-xây-dựng-các-khối-mã-tái-sử-dụng">Functions: Xây dựng các Khối Mã Tái Sử Dụng</h2>
+<p><strong>Chức năng</strong> đóng vai trò là những viên gạch thiết yếu trong Rust, đóng gói các nhiệm vụ hoặc phép toán cụ thể. Chúng cho phép bạn cấu trúc mã hiệu quả, thúc đẩy tái sử dụng mã, đồng thời nâng cao khả năng đọc và bảo trì.</p>
+<p><strong>Khái niệm chính:</strong></p>
+<ul>
+<li><strong>Định nghĩa Chức năng:</strong>
+<ul>
+<li>Sử dụng từ khóa <code>fn</code>, tiếp theo là tên chức năng và dấu ngoặc đơn cho các tham số.</li>
+<li>Dấu ngoặc nhọn <code>{}</code> bao quanh phần thân chức năng chứa mã được thực thi.</li>
+</ul></li>
+<li><strong>Chữ ký Chức năng:</strong>
+<ul>
+<li>Bao gồm tên chức năng, danh sách tham số (nếu có) và kiểu trả về (tùy chọn).</li>
+<li>Ví dụ: <code>fn plus_one(x: i32) -&gt; i32</code>
+<ul>
+<li><code>plus_one</code>: Tên chức năng</li>
+<li><code>x: i32</code>: Tham số tên <code>x</code> có kiểu <code>i32</code> (số nguyên)</li>
+<li><code>-&gt; i32</code>: Trả về giá trị <code>i32</code></li>
+</ul></li>
+</ul></li>
+<li><strong>Tham số và Đối số:</strong>
+<ul>
+<li>Tham số là các biến được định nghĩa trong chữ ký chức năng.</li>
+<li>Đối số là các giá trị thực tế được truyền khi gọi chức năng.</li>
+<li>Ví dụ: <code>plus_one(5)</code> truyền đối số <code>5</code> cho tham số <code>x</code>.</li>
+</ul></li>
+<li><strong>Giá trị Trả về:</strong>
+<ul>
+<li>Chức năng có thể tùy chọn trả về giá trị bằng cách sử dụng từ khóa <code>return</code> hoặc ngầm định thông qua biểu thức cuối cùng.</li>
+<li>Kiểu trả về phải được chỉ định sau mũi tên <code>-&gt;</code> trong chữ ký.</li>
+</ul></li>
+</ul>
+<p><strong>Ví dụ: Cộng hai số</strong></p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode rust code-with-copy"><code class="sourceCode rust"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">fn</span> add(x<span class="op">:</span> <span class="dt">i32</span><span class="op">,</span> y<span class="op">:</span> <span class="dt">i32</span>) <span class="op">-&gt;</span> <span class="dt">i32</span> <span class="op">{</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>    x <span class="op">+</span> y</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="kw">fn</span> main() <span class="op">{</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>    <span class="kw">let</span> sum <span class="op">=</span> add(<span class="dv">5</span><span class="op">,</span> <span class="dv">3</span>)<span class="op">;</span> <span class="co">// Gọi hàm add với các đối số 5 và 3</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>    <span class="pp">println!</span>(<span class="st">"Tổng là: {}"</span><span class="op">,</span> sum)<span class="op">;</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><strong>Giải thích:</strong></p>
+<ol type="1">
+<li>Hàm <code>add</code> lấy hai tham số <code>i32</code> (<code>x</code> và <code>y</code>) và trả về giá trị <code>i32</code>.</li>
+<li>Bên trong hàm, <code>x</code> và <code>y</code> được cộng lại và kết quả được trả về.</li>
+<li>Trong hàm <code>main</code>, <code>add</code> được gọi với các đối số <code>5</code> và <code>3</code>, gán tổng trả về cho biến <code>sum</code>.</li>
+<li>Giá trị của <code>sum</code> được in ra bằng <code>println!</code>.</li>
+</ol>
+<p><strong>Gọi Chức năng:</strong></p>
+<ul>
+<li>Để gọi một chức năng, hãy sử dụng tên của nó theo sau là dấu ngoặc đơn chứa các đối số theo đúng thứ tự và kiểu.</li>
+<li>Đối số được đánh giá trước khi được truyền cho chức năng.</li>
+</ul>
+<p><strong>Lợi ích của việc sử dụng Chức năng:</strong></p>
+<ul>
+<li><strong>Tái sử dụng Mã:</strong> Định nghĩa một chức năng một lần và gọi nó từ nhiều vị trí trong mã của bạn.</li>
+<li><strong>Khả năng đọc được cải thiện:</strong> Chia nhỏ các khối mã lớn thành các chức năng nhỏ hơn được đặt tên tốt, giúp mã dễ hiểu hơn.</li>
+<li><strong>Khả năng bảo trì:</strong> Việc sửa đổi dễ dàng hơn khi mã được tổ chức thành các chức năng, vì các thay đổi chỉ ảnh hưởng đến chức năng liên quan.</li>
+</ul>
+<p><strong>Lưu ý bổ sung:</strong></p>
+<ul>
+<li>Chức năng có thể có từ 0 đến nhiều tham số và một giá trị trả về duy nhất.</li>
+<li>Chức năng có thể được định nghĩa bất cứ nơi nào trong mã của bạn, nhưng phải có thể truy cập được từ nơi chúng được gọi.</li>
+<li>Rust áp dụng an toàn kiểu, đảm bảo tính tương thích kiểu giữa các tham số, đối số và giá trị trả về.</li>
+</ul>
+</section>
+<section id="comments" class="level2">
+<h2 class="anchored" data-anchor-id="comments">Comments</h2>
+<p><strong>Mục đích:</strong></p>
+<p>Giống như nhiều ngôn ngữ lập trình khác, Rust cho phép lập trình viên thêm các bình luận (comment) vào mã nguồn. Bình luận là những đoạn văn bản nhằm giải thích hoặc ghi chú về mã nguồn, nhưng sẽ bị trình biên dịch Rust bỏ qua. Bình luận giúp cho người đọc mã nguồn dễ dàng hiểu được logic và mục đích của từng phần code.</p>
+<p><strong>Kiểu bình luận:</strong></p>
+<p>Rust hỗ trợ hai loại bình luận chính:</p>
+<ol type="1">
+<li><strong>Bình luận dòng (line comment):</strong> Bắt đầu bằng hai dấu gạch chéo <code>//</code> và kéo dài đến hết dòng.</li>
+<li><strong>Bình luận khối (block comment):</strong> Bắt đầu bằng <code>/*</code> và kết thúc bằng <code>*/</code>. Bình luận khối có thể kéo dài nhiều dòng.</li>
+</ol>
+<p><strong>Ví dụ:</strong></p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode rust code-with-copy"><code class="sourceCode rust"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co">// Bình luận dòng</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="kw">let</span> x <span class="op">=</span> <span class="dv">5</span><span class="op">;</span> <span class="co">// Gán giá trị 5 cho biến x</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="co">/* Bình luận khối</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="co">   Giải thích về đoạn code tiếp theo</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="co">*/</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="kw">let</span> y <span class="op">=</span> x <span class="op">*</span> <span class="dv">2</span><span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><strong>Vị trí:</strong></p>
+<p>Bình luận có thể được đặt ở nhiều vị trí khác nhau trong mã nguồn:</p>
+<ul>
+<li>Trước một dòng code để giải thích mục đích của dòng đó.</li>
+<li>Sau một dòng code để cung cấp thêm thông tin chi tiết.</li>
+<li>Giữa các dòng code để giải thích logic của một khối code phức tạp.</li>
+</ul>
+<p><strong>Thực hành tốt:</strong></p>
+<ul>
+<li>Sử dụng bình luận một cách hợp lý, không nên lạm dụng quá nhiều.</li>
+<li>Giữ cho bình luận ngắn gọn và dễ hiểu, tránh sử dụng ngôn ngữ khó hiểu hoặc thuật ngữ chuyên ngành trừ khi cần thiết.</li>
+<li>Cập nhật bình luận khi code thay đổi để đảm bảo tính nhất quán.</li>
+</ul>
+<p>Bằng việc sử dụng bình luận hiệu quả, bạn có thể cải thiện đáng kể tính dễ đọc và bảo trì của mã nguồn Rust, giúp cho người khác (và chính bạn trong tương lai) dễ dàng hiểu được logic và mục đích của code.</p>
+</section>
+<section id="kiểm-soát-luồng-trong-rust" class="level2">
+<h2 class="anchored" data-anchor-id="kiểm-soát-luồng-trong-rust">Kiểm soát Luồng trong Rust</h2>
+<p><strong>Khái niệm:</strong></p>
+<p>Kiểm soát luồng là khả năng thực thi các khối mã khác nhau tùy theo điều kiện và lặp lại một khối mã nhiều lần cho đến khi một điều kiện nào đó được đáp ứng. Trong Rust, các công cụ chính để kiểm soát luồng là <strong>biểu thức if</strong> và <strong>vòng lặp</strong>.</p>
+<p><strong>Biểu thức if:</strong></p>
+<ul>
+<li><p>Cho phép rẽ nhánh mã theo các điều kiện.</p></li>
+<li><p>Cú pháp:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode rust code-with-copy"><code class="sourceCode rust"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> condition <span class="op">{</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Khối mã được thực thi nếu điều kiện là đúng</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="op">}</span> <span class="cf">else</span> <span class="op">{</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Khối mã được thực thi nếu điều kiện là sai (tùy chọn)</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
+<li><p><code>condition</code> phải là một biểu thức trả về giá trị <code>bool</code>.</p></li>
+<li><p>Ví dụ:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode rust code-with-copy"><code class="sourceCode rust"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">let</span> number <span class="op">=</span> <span class="dv">3</span><span class="op">;</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> number <span class="op">&lt;</span> <span class="dv">5</span> <span class="op">{</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    <span class="pp">println!</span>(<span class="st">"Điều kiện là đúng"</span>)<span class="op">;</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="op">}</span> <span class="cf">else</span> <span class="op">{</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>    <span class="pp">println!</span>(<span class="st">"Điều kiện là sai"</span>)<span class="op">;</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
+</ul>
+<p><strong>Vòng lặp:</strong></p>
+<ul>
+<li>Cho phép lặp lại một khối mã nhiều lần.</li>
+<li>Rust có 3 loại vòng lặp: <code>loop</code>, <code>while</code>, và <code>for</code>.</li>
+</ul>
+<p><strong>1. Vòng lặp <code>loop</code>:</strong></p>
+<ul>
+<li><p>Lặp lại vô tận cho đến khi sử dụng lệnh <code>break</code> để thoát.</p></li>
+<li><p>Ví dụ:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode rust code-with-copy"><code class="sourceCode rust"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="cf">loop</span> <span class="op">{</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    <span class="pp">println!</span>(<span class="st">"Lặp lại!"</span>)<span class="op">;</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">break</span><span class="op">;</span> <span class="co">// Thoát khỏi vòng lặp</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
+</ul>
+<p><strong>2. Vòng lặp <code>while</code>:</strong></p>
+<ul>
+<li><p>Lặp lại cho đến khi một điều kiện trở thành <code>false</code>.</p></li>
+<li><p>Cú pháp:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode rust code-with-copy"><code class="sourceCode rust"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="cf">while</span> condition <span class="op">{</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Khối mã được thực thi</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
+<li><p>Ví dụ:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode rust code-with-copy"><code class="sourceCode rust"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">let</span> <span class="kw">mut</span> number <span class="op">=</span> <span class="dv">3</span><span class="op">;</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="cf">while</span> number <span class="op">!=</span> <span class="dv">0</span> <span class="op">{</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>    <span class="pp">println!</span>(<span class="st">"{}"</span><span class="op">,</span> number)<span class="op">;</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>    number <span class="op">-=</span> <span class="dv">1</span><span class="op">;</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
+</ul>
+<p><strong>3. Vòng lặp <code>for</code>:</strong></p>
+<ul>
+<li><p>Lặp lại từng phần tử trong một bộ sưu tập (mảng, danh sách, …).</p></li>
+<li><p>Cú pháp:</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode rust code-with-copy"><code class="sourceCode rust"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> element <span class="kw">in</span> collection <span class="op">{</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Khối mã được thực thi cho mỗi phần tử</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
+<li><p>Ví dụ:</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode rust code-with-copy"><code class="sourceCode rust"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="kw">let</span> numbers <span class="op">=</span> [<span class="dv">1</span><span class="op">,</span> <span class="dv">2</span><span class="op">,</span> <span class="dv">3</span><span class="op">,</span> <span class="dv">4</span><span class="op">,</span> <span class="dv">5</span>]<span class="op">;</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> number <span class="kw">in</span> numbers <span class="op">{</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>    <span class="pp">println!</span>(<span class="st">"Giá trị: {}"</span><span class="op">,</span> number)<span class="op">;</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
+</ul>
+<p><strong>Tóm lược:</strong></p>
+<p>Biểu thức <code>if</code> và các vòng lặp là công cụ quan trọng để kiểm soát luồng thực thi của chương trình Rust. Việc sử dụng linh hoạt các công cụ này giúp bạn viết code logic và hiệu quả hơn.</p>
+</section>
+<section id="quyền-sở-hữu-ownership-trong-rust" class="level2">
+<h2 class="anchored" data-anchor-id="quyền-sở-hữu-ownership-trong-rust">Quyền sở hữu (Ownership) trong Rust</h2>
+<p>Quyền sở hữu là một khái niệm cốt lõi trong Rust, chi phối cách quản lý và truy cập bộ nhớ trong chương trình của bạn. Nó đảm bảo an toàn bộ nhớ và ngăn chặn các lỗi như rò rỉ bộ nhớ và con trỏ lơ lửng. Dưới đây là phân tích về Quyền sở hữu trong Rust:</p>
+<p><strong>1. Mỗi giá trị trong Rust có một chủ sở hữu (Owner).</strong> - Chủ sở hữu này là biến giữ giá trị. - Chỉ có một biến có thể sở hữu một giá trị tại một thời điểm.</p>
+<p><strong>2. Khi chủ sở hữu đi ra khỏi phạm vi, giá trị sẽ bị hủy (drop).</strong> - Phạm vi xác định khối mã nơi một biến hợp lệ. - Khi khối mã kết thúc, biến sẽ đi ra khỏi phạm vi và giá trị sở hữu của nó sẽ tự động bị hủy (giải phóng khỏi bộ nhớ).</p>
+<p><strong>3. Có hai cách để tương tác với dữ liệu: di chuyển (move) và sao chép (copy).</strong> - <strong>Di chuyển:</strong> Khi bạn gán một giá trị (như String) cho một biến khác, quyền sở hữu sẽ được chuyển (di chuyển). Biến ban đầu trở nên không hợp lệ và không thể sử dụng được nữa. - <strong>Sao chép:</strong> Đối với các kiểu dữ liệu đơn giản như số nguyên (i32), có kích thước đã biết và được lưu trữ trên ngăn xếp, việc gán sẽ tạo ra một bản sao của giá trị. Cả hai biến đều hợp lệ và độc lập.</p>
+<p><strong>4. Quyền sở hữu và Hàm:</strong> - Việc truyền giá trị cho một hàm thường di chuyển quyền sở hữu, tương tự như việc gán. Hàm trở thành chủ sở hữu mới và giá trị không còn hợp lệ trong phạm vi gọi. - Trả về giá trị từ hàm cũng có thể chuyển quyền sở hữu. Giá trị trả về trở thành sở hữu của phạm vi gọi.</p>
+<p><strong>5. Tham chiếu (References):</strong> - Tham chiếu mượn quyền sở hữu của một giá trị mà không chiếm quyền sở hữu chính nó. Chúng cung cấp một cách để truy cập và sử dụng dữ liệu mà không di chuyển nó. - Tham chiếu đặc biệt hữu ích khi bạn muốn nhiều phần trong mã của mình làm việc với cùng một dữ liệu mà không cần sao chép hoặc lo lắng về quyền sở hữu.</p>
+<p><strong>Lợi ích của Quyền sở hữu:</strong></p>
+<ul>
+<li><strong>An toàn bộ nhớ:</strong> Quyền sở hữu ngăn chặn rò rỉ bộ nhớ và con trỏ lơ lửng, làm cho chương trình Rust đáng tin cậy hơn và ít bị lỗi hơn.</li>
+<li><strong>Cải thiện độ rõ ràng của mã:</strong> Quy tắc sở hữu thực thi quản lý dữ liệu rõ ràng, dẫn đến hành vi mã rõ ràng hơn và dễ dự đoán hơn.</li>
+<li><strong>Hiệu quả:</strong> Quyền sở hữu loại bỏ nhu cầu quản lý bộ nhớ thủ công (như trong C/C++), có khả năng cải thiện hiệu suất bằng cách tránh các hoạt động bộ nhớ không cần thiết.</li>
+</ul>
+<p><strong>Ghi chú bổ sung:</strong></p>
+<ul>
+<li>Hàm <code>drop</code> được tự động gọi khi một giá trị bị hủy, cho phép thực hiện bất kỳ hành động dọn dẹp nào cần thiết.</li>
+<li>Đặc điểm <code>Copy</code> được triển khai cho các kiểu đơn giản như số nguyên, cho biết chúng có thể được sao chép mà không ảnh hưởng đến giá trị ban đầu.</li>
+<li>Hiểu rõ về Quyền sở hữu là điều cần thiết để viết chương trình Rust hiệu quả và an toàn.</li>
+</ul>
+<p>Bằng cách nắm vững các nguyên tắc sở hữu này, bạn sẽ có thể phát triển các ứng dụng Rust mạnh mẽ và đáng tin cậy.</p>
+</section>
+<section id="tham-chiếu-references-và-mượn-borrowing-trong-rust" class="level2">
+<h2 class="anchored" data-anchor-id="tham-chiếu-references-và-mượn-borrowing-trong-rust">Tham chiếu (References) và Mượn (Borrowing) trong Rust</h2>
+<p><strong>Vấn đề với mã tuple trong Liệt kê 4-5 là chúng ta phải trả về giá trị String cho hàm gọi để vẫn có thể sử dụng String sau khi gọi calculate_length, vì String đã được di chuyển vào calculate_length. Thay vào đó, chúng ta có thể cung cấp một tham chiếu (reference) tới giá trị String. Tham chiếu giống như một con trỏ ở chỗ nó là một địa chỉ mà chúng ta có thể theo dõi để truy cập dữ liệu được lưu trữ tại địa chỉ đó; dữ liệu đó thuộc sở hữu của một biến khác. Không giống như con trỏ, tham chiếu được đảm bảo sẽ trỏ đến một giá trị hợp lệ của một kiểu dữ liệu cụ thể trong suốt vòng đời của tham chiếu đó.</strong></p>
+<p>Đây là cách bạn định nghĩa và sử dụng hàm calculate_length có tham chiếu đến một đối tượng làm tham số thay vì lấy quyền sở hữu giá trị:</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode rust code-with-copy"><code class="sourceCode rust"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="kw">fn</span> main() <span class="op">{</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">let</span> s1 <span class="op">=</span> <span class="dt">String</span><span class="pp">::</span>from(<span class="st">"hello"</span>)<span class="op">;</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>    <span class="kw">let</span> len <span class="op">=</span> calculate_length(<span class="op">&amp;</span>s1)<span class="op">;</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>    <span class="pp">println!</span>(<span class="st">"The length of '{}' is {}."</span><span class="op">,</span> s1<span class="op">,</span> len)<span class="op">;</span></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a><span class="kw">fn</span> calculate_length(s<span class="op">:</span> <span class="op">&amp;</span><span class="dt">String</span>) <span class="op">-&gt;</span> <span class="dt">usize</span> <span class="op">{</span></span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>    s<span class="op">.</span>len()</span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Đầu tiên, lưu ý rằng tất cả mã tuple trong khai báo biến và giá trị trả về của hàm đã biến mất. Thứ hai, lưu ý rằng chúng ta truyền <code>&amp;s1</code> vào <code>calculate_length</code> và trong định nghĩa của nó, chúng ta lấy <code>&amp;String</code> thay vì <code>String</code>. Những dấu ngoặc nhọn này biểu thị <strong>tham chiếu (references)</strong>, và chúng cho phép bạn tham chiếu đến một giá trị nào đó mà không chiếm quyền sở hữu nó. Hình 4-5 mô tả khái niệm này.</p>
+<p>[Hình 4-5: Sơ đồ của <code>&amp;String s</code> trỏ đến <code>String s1</code>]</p>
+<p><strong>Lưu ý:</strong> Phép toán ngược lại của việc tham chiếu bằng cách sử dụng <code>&amp;</code> là <strong>hủy tham chiếu (dereferencing)</strong>, được thực hiện bằng toán tử hủy tham chiếu, <code>*</code>. Chúng ta sẽ thấy một số cách sử dụng toán tử hủy tham chiếu trong Chương 8 và thảo luận chi tiết về hủy tham chiếu trong Chương 15.</p>
+<p>Hãy xem xét kỹ hơn lời gọi hàm ở đây:</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode rust code-with-copy"><code class="sourceCode rust"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="kw">let</span> s1 <span class="op">=</span> <span class="dt">String</span><span class="pp">::</span>from(<span class="st">"hello"</span>)<span class="op">;</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="kw">let</span> len <span class="op">=</span> calculate_length(<span class="op">&amp;</span>s1)<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Cú pháp <code>&amp;s1</code> cho phép chúng ta tạo một tham chiếu <strong>tham chiếu</strong> đến giá trị của <code>s1</code> nhưng không sở hữu nó. Vì nó không sở hữu nó, giá trị mà nó trỏ đến sẽ không bị hủy khi tham chiếu ngừng được sử dụng.</p>
+<p>Tương tự, chữ ký của hàm sử dụng <code>&amp;</code> để chỉ ra rằng kiểu của tham số <code>s</code> là một tham chiếu. Hãy thêm một số chú thích giải thích:</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode rust code-with-copy"><code class="sourceCode rust"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="kw">fn</span> calculate_length(s<span class="op">:</span> <span class="op">&amp;</span><span class="dt">String</span>) <span class="op">-&gt;</span> <span class="dt">usize</span> <span class="op">{</span> <span class="co">// s là một tham chiếu đến một String</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>    s<span class="op">.</span>len()</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="op">}</span> <span class="co">// Tại đây, s ra khỏi phạm vi. Nhưng vì nó không sở hữu những gì nó tham chiếu đến, nên nó không bị hủy.</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Phạm vi mà biến <code>s</code> hợp lệ giống như bất kỳ phạm vi nào của tham số hàm, nhưng giá trị được tham chiếu bởi tham chiếu không bị hủy khi <code>s</code> ngừng được sử dụng, bởi vì <code>s</code> không sở hữu. Khi các hàm có tham chiếu làm tham số thay vì các giá trị thực tế, chúng ta sẽ không cần trả về các giá trị để trả lại quyền sở hữu, vì chúng ta chưa bao giờ có quyền sở hữu.</p>
+<p>Chúng ta gọi hành động tạo ra một tham chiếu là <strong>mượn (borrowing)</strong>. Giống như trong cuộc sống thực, nếu ai đó sở hữu thứ gì, bạn có thể mượn nó từ họ. Khi bạn xong việc, bạn phải trả lại. Bạn không sở hữu nó.</p>
+<p>Vậy, chuyện gì xảy ra nếu chúng ta cố gắng sửa đổi thứ gì đó mà chúng ta đang mượn? Thử mã trong Liệt kê 4-6. Cảnh báo Spoiler: nó không hoạt động!</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode rust code-with-copy"><code class="sourceCode rust"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="kw">fn</span> main() <span class="op">{</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">let</span> s <span class="op">=</span> <span class="dt">String</span><span class="pp">::</span>from(<span class="st">"hello"</span>)<span class="op">;</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>    change(<span class="op">&amp;</span>s)<span class="op">;</span></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a><span class="kw">fn</span> change(some_string<span class="op">:</span> <span class="op">&amp;</span><span class="dt">String</span>) <span class="op">{</span></span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>    some_string<span class="op">.</span>push_str(<span class="st">", world"</span>)<span class="op">;</span></span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Đây là lỗi:</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> cargo run</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>   <span class="ex">Compiling</span> ownership v0.1.0 <span class="er">(</span><span class="ex">file:///projects/ownership</span><span class="kw">)</span></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="va">error</span><span class="op">[</span>E0596<span class="op">]</span><span class="ex">:</span> cannot borrow <span class="kw">`</span><span class="ex">*some_string</span><span class="kw">`</span> as</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="string-slices-trong-rust-hướng-dẫn-toàn-diện" class="level2">
+<h2 class="anchored" data-anchor-id="string-slices-trong-rust-hướng-dẫn-toàn-diện">String Slices trong Rust: Hướng Dẫn Toàn Diện</h2>
+<p><strong>String Slices là gì?</strong></p>
+<p>Trong Rust, String Slices là kiểu dữ liệu cơ bản cho phép bạn tham chiếu một chuỗi ký tự liên tục trong một <code>String</code>. Về bản chất, chúng là các tham chiếu được mượn từ một phần của <code>String</code>, cho phép bạn làm việc với các phần cụ thể của chuỗi mà không cần sở hữu toàn bộ chuỗi.</p>
+<p><strong>Tại sao nên sử dụng String Slices?</strong></p>
+<p>String Slices mang lại nhiều lợi ích:</p>
+<ol type="1">
+<li><strong>Hiệu quả sử dụng bộ nhớ:</strong> Tránh sao chép dữ liệu không cần thiết. Thay vì tạo một chuỗi mới cho mỗi thao tác con chuỗi, bạn có thể sử dụng một slice để truy cập trực tiếp vào phần liên quan của chuỗi gốc. Điều này đặc biệt hữu ích khi xử lý các chuỗi lớn.</li>
+<li><strong>Lập trình chức năng:</strong> Slices tích hợp liền mạch với các cấu trúc lập trình chức năng của Rust như iterators và closures, cung cấp cách ngắn gọn và biểu cảm để thao tác với chuỗi.</li>
+<li><strong>Mượn và Tham chiếu:</strong> Tuân theo các quy tắc sở hữu và mượn của Rust, đảm bảo an toàn bộ nhớ và ngăn chặn các con trỏ lơ lửng.</li>
+</ol>
+<p><strong>Tạo String Slices</strong></p>
+<p>Bạn có thể tạo String Slices theo hai cách:</p>
+<ol type="1">
+<li><p><strong>Sử dụng String Literals:</strong> String literals (được biểu thị bằng dấu ngoặc kép <code>"</code>) tự động được chuyển đổi thành <code>&amp;str</code> string slices, là các tham chiếu không thay đổi đến dữ liệu chuỗi được lưu trữ trong nhị phân của chương trình.</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode rust code-with-copy"><code class="sourceCode rust"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="kw">let</span> hello_world <span class="op">=</span> <span class="st">"Hello, world!"</span><span class="op">;</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="kw">let</span> hello <span class="op">=</span> <span class="op">&amp;</span>hello_world[<span class="dv">0</span><span class="op">..</span><span class="dv">5</span>]<span class="op">;</span> <span class="co">// Slice từ chỉ mục 0 (bao gồm) đến 5 (không bao gồm)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
+<li><p><strong>Cắt một String:</strong> Bạn có thể tạo một slice của một <code>String</code> bằng cách sử dụng cú pháp lập chỉ mục <code>[start_index..end_index]</code>. <code>start_index</code> (bao gồm) chỉ định ký tự bắt đầu và <code>end_index</code> (không bao gồm) chỉ định ký tự sau ký tự cuối cùng được bao gồm trong slice.</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode rust code-with-copy"><code class="sourceCode rust"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="kw">let</span> <span class="kw">mut</span> my_string <span class="op">=</span> <span class="dt">String</span><span class="pp">::</span>from(<span class="st">"Rust is awesome!"</span>)<span class="op">;</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="kw">let</span> awesome <span class="op">=</span> <span class="op">&amp;</span>my_string[<span class="dv">11</span><span class="op">..</span>]<span class="op">;</span>  <span class="co">// Slice từ chỉ mục 11 (bao gồm) đến cuối</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div></li>
+</ol>
+<p><strong>Cú pháp cắt phổ biến:</strong></p>
+<ul>
+<li><code>[start_index..end_index]</code>: Đây là cú pháp chung, trong đó <code>start_index</code> và <code>end_index</code> là các biểu thức số nguyên cho biết vị trí bắt đầu và kết thúc của slice (không bao gồm <code>end_index</code>).</li>
+<li><code>[..end_index]</code>: Bao gồm tất cả các ký tự từ đầu chuỗi đến, nhưng không bao gồm, <code>end_index</code>.</li>
+<li><code>[start_index..]</code>: Bao gồm tất cả các ký tự từ <code>start_index</code> (bao gồm) đến cuối chuỗi.</li>
+<li><code>[:]</code>: Bao gồm toàn bộ chuỗi (tương đương với <code>[..</code>).</li>
+</ul>
+<p><strong>Điểm chính cần ghi nhớ:</strong></p>
+<ul>
+<li>String Slices không thay đổi; bạn không thể sửa đổi trực tiếp các ký tự bên trong chúng.</li>
+<li>String Slices mượn từ chuỗi gốc, vì vậy thời gian tồn tại của chúng gắn liền với thời gian tồn tại của chuỗi gốc.</li>
+<li>String Slices nhẹ và không yêu cầu phân bổ bộ nhớ bổ sung trong hầu hết các trường hợp.</li>
+</ul>
+<p><strong>Lưu ý bổ sung:</strong></p>
+<ul>
+<li>Khi làm việc với string slices chứa văn bản được mã hóa UTF-8, hãy đảm bảo rằng ranh giới slice của bạn căn chỉnh với ranh giới ký tự UTF-8 hợp lệ. Nếu không, bạn có thể gặp lỗi.</li>
+<li>String Slices cung cấp một số phương thức để thao tác chuỗi, chẳng hạn như <code>iter()</code>, <code>len()</code> và <code>is_empty()</code>. Các phương thức này hoạt động trên dữ liệu được mượn và không sửa đổi chuỗi gốc.</li>
+</ul>
+<p><strong>Tóm lại</strong></p>
+<p>String Slices là một công cụ mạnh mẽ và linh hoạt trong Rust để làm việc với các phần cụ thể của chuỗi. Chúng thúc đẩy hiệu quả sử dụng bộ nhớ, tạo điều kiện cho lập trình chức năng và tuân theo các hệ thống sở hữu và mượn của Rust. Bằng cách hiểu cách tạo, cú pháp phổ biến và các điểm chính, bạn có thể sử dụng String Slices hiệu quả trong các chương trình Rust của mìnhepj</p>
+</section>
+<section id="giải-thích-thêm-về-struct-trong-rust" class="level2">
+<h2 class="anchored" data-anchor-id="giải-thích-thêm-về-struct-trong-rust">Giải thích thêm về Struct trong Rust</h2>
+<p><strong>Ví dụ về Struct:</strong></p>
+<p>Ngoài ví dụ về <code>User</code> đã được đề cập, đây là một số ví dụ khác về cách sử dụng struct:</p>
+<ul>
+<li><strong>Struct để biểu diễn điểm trong không gian 3 chiều:</strong></li>
+</ul>
+<div class="sourceCode" id="cb17"><pre class="sourceCode rust code-with-copy"><code class="sourceCode rust"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="kw">struct</span> Point3D <span class="op">{</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>    x<span class="op">:</span> <span class="dt">f64</span><span class="op">,</span></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>    y<span class="op">:</span> <span class="dt">f64</span><span class="op">,</span></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>    z<span class="op">:</span> <span class="dt">f64</span><span class="op">,</span></span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ul>
+<li><strong>Struct để biểu diễn ngày tháng:</strong></li>
+</ul>
+<div class="sourceCode" id="cb18"><pre class="sourceCode rust code-with-copy"><code class="sourceCode rust"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="kw">struct</span> Date <span class="op">{</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>    year<span class="op">:</span> <span class="dt">u32</span><span class="op">,</span></span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>    month<span class="op">:</span> <span class="dt">u8</span><span class="op">,</span></span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>    day<span class="op">:</span> <span class="dt">u8</span><span class="op">,</span></span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ul>
+<li><strong>Struct để biểu diễn một bộ bài:</strong></li>
+</ul>
+<div class="sourceCode" id="cb19"><pre class="sourceCode rust code-with-copy"><code class="sourceCode rust"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="kw">struct</span> Card <span class="op">{</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>    suit<span class="op">:</span> Suit<span class="op">,</span></span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>    rank<span class="op">:</span> Rank<span class="op">,</span></span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a><span class="kw">enum</span> Suit <span class="op">{</span></span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>    Hearts<span class="op">,</span></span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a>    Diamonds<span class="op">,</span></span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a>    Clubs<span class="op">,</span></span>
+<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a>    Spades<span class="op">,</span></span>
+<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-13"><a href="#cb19-13" aria-hidden="true" tabindex="-1"></a><span class="kw">enum</span> Rank <span class="op">{</span></span>
+<span id="cb19-14"><a href="#cb19-14" aria-hidden="true" tabindex="-1"></a>    Ace<span class="op">,</span></span>
+<span id="cb19-15"><a href="#cb19-15" aria-hidden="true" tabindex="-1"></a>    Two<span class="op">,</span></span>
+<span id="cb19-16"><a href="#cb19-16" aria-hidden="true" tabindex="-1"></a>    Three<span class="op">,</span></span>
+<span id="cb19-17"><a href="#cb19-17" aria-hidden="true" tabindex="-1"></a>    <span class="op">...</span></span>
+<span id="cb19-18"><a href="#cb19-18" aria-hidden="true" tabindex="-1"></a>    Ten<span class="op">,</span></span>
+<span id="cb19-19"><a href="#cb19-19" aria-hidden="true" tabindex="-1"></a>    Jack<span class="op">,</span></span>
+<span id="cb19-20"><a href="#cb19-20" aria-hidden="true" tabindex="-1"></a>    Queen<span class="op">,</span></span>
+<span id="cb19-21"><a href="#cb19-21" aria-hidden="true" tabindex="-1"></a>    King<span class="op">,</span></span>
+<span id="cb19-22"><a href="#cb19-22" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><strong>Sử dụng Struct với các hàm:</strong></p>
+<p>Bạn có thể sử dụng struct với các hàm để truyền dữ liệu một cách hiệu quả và dễ đọc. Ví dụ:</p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode rust code-with-copy"><code class="sourceCode rust"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="kw">fn</span> greet_user(user<span class="op">:</span> User) <span class="op">{</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>    <span class="pp">println!</span>(<span class="st">"Hello, {}!"</span><span class="op">,</span> user<span class="op">.</span>username)<span class="op">;</span></span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a><span class="kw">fn</span> main() <span class="op">{</span></span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>    <span class="kw">let</span> user1 <span class="op">=</span> User <span class="op">{</span></span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>        active<span class="op">:</span> <span class="cn">true</span><span class="op">,</span></span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a>        username<span class="op">:</span> <span class="dt">String</span><span class="pp">::</span>from(<span class="st">"someusername123"</span>)<span class="op">,</span></span>
+<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a>        email<span class="op">:</span> <span class="dt">String</span><span class="pp">::</span>from(<span class="st">"someone@example.com"</span>)<span class="op">,</span></span>
+<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a>        sign_in_count<span class="op">:</span> <span class="dv">1</span><span class="op">,</span></span>
+<span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a>    <span class="op">};</span></span>
+<span id="cb20-12"><a href="#cb20-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-13"><a href="#cb20-13" aria-hidden="true" tabindex="-1"></a>    greet_user(user1)<span class="op">;</span></span>
+<span id="cb20-14"><a href="#cb20-14" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><strong>Lợi ích của việc sử dụng Struct:</strong></p>
+<ul>
+<li><strong>Khả năng đọc:</strong> Struct giúp mã của bạn dễ đọc và dễ hiểu hơn bằng cách nhóm các dữ liệu liên quan lại với nhau.</li>
+<li><strong>Tính bảo trì:</strong> Struct giúp mã của bạn dễ bảo trì hơn bằng cách cho phép bạn dễ dàng thêm, xóa hoặc sửa đổi các trường.</li>
+<li><strong>Tái sử dụng:</strong> Bạn có thể sử dụng lại struct trong các phần khác nhau của mã.</li>
+</ul>
+<p><strong>Kết luận:</strong></p>
+<p>Struct là một công cụ mạnh mẽ trong Rust cho phép bạn nhóm các dữ liệu liên quan lại với nhau và tạo ra các kiểu dữ liệu tùy chỉnh. Sử dụng struct có thể giúp mã của bạn dễ đọc, dễ bảo trì và dễ sử dụng lại.</p>
+<p><strong>Ngoài ra:</strong></p>
+<ul>
+<li>Bạn có thể sử dụng các thuộc tính để thêm metadata vào các struct và trường của chúng.</li>
+<li>Bạn có thể sử dụng các phương thức để thêm chức năng vào struct.</li>
+<li>Bạn có thể sử dụng các trait để cung cấp chức năng chung cho các struct khác nhau.</li>
+</ul>
+</section>
+<section id="chương-trình-mẫu-sử-dụng-struct" class="level2">
+<h2 class="anchored" data-anchor-id="chương-trình-mẫu-sử-dụng-struct">Chương trình mẫu sử dụng Struct</h2>
+<p>Để hiểu khi nào chúng ta có thể sử dụng struct, hãy viết một chương trình tính toán diện tích hình chữ nhật. Chúng ta sẽ bắt đầu bằng cách sử dụng các biến đơn, sau đó cải tiến chương trình cho đến khi sử dụng struct.</p>
+<p>Giả sử chúng ta tạo một dự án nhị phân mới với Cargo có tên là <code>rectangles</code>, dự án này sẽ lấy chiều rộng và chiều cao của một hình chữ nhật được xác định bằng pixel và tính toán diện tích của hình chữ nhật. Liệt kê 5-8 hiển thị một chương trình ngắn thực hiện chính xác việc đó trong thư mục <code>src/main.rs</code> của dự án.</p>
+<div class="sourceCode" id="cb21"><pre class="sourceCode rust code-with-copy"><code class="sourceCode rust"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="kw">fn</span> main() <span class="op">{</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">let</span> width1 <span class="op">=</span> <span class="dv">30</span><span class="op">;</span></span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>    <span class="kw">let</span> height1 <span class="op">=</span> <span class="dv">50</span><span class="op">;</span></span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>    <span class="pp">println!</span>(</span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>        <span class="st">"The area of the rectangle is {} square pixels."</span><span class="op">,</span></span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>        area(width1<span class="op">,</span> height1)</span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a>    )<span class="op">;</span></span>
+<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a><span class="kw">fn</span> area(width<span class="op">:</span> <span class="dt">u32</span><span class="op">,</span> height<span class="op">:</span> <span class="dt">u32</span>) <span class="op">-&gt;</span> <span class="dt">u32</span> <span class="op">{</span></span>
+<span id="cb21-12"><a href="#cb21-12" aria-hidden="true" tabindex="-1"></a>    width <span class="op">*</span> height</span>
+<span id="cb21-13"><a href="#cb21-13" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><strong>Bảng 5-8: Tính toán diện tích của một hình chữ nhật được xác định bởi các biến riêng biệt về chiều rộng và chiều cao</strong></p>
+<p>Bây giờ, hãy chạy chương trình này bằng cách sử dụng <code>cargo run</code>:</p>
+<pre><code>$ cargo run
+   Compiling rectangles v0.1.0 (file:///projects/rectangles)
+    Finished dev [unoptimized + debuginfo] target(s) in 0.42s
+     Running `target/debug/rectangles`
+The area of the rectangle is 1500 square pixels.</code></pre>
+<p>Mã này thành công trong việc tìm ra diện tích của hình chữ nhật bằng cách gọi hàm <code>area</code> với mỗi chiều, nhưng chúng ta có thể làm nhiều hơn để mã này rõ ràng và dễ đọc hơn.</p>
+<p>Vấn đề với đoạn mã này nằm ở phần khai báo hàm <code>area</code>:</p>
+<div class="sourceCode" id="cb23"><pre class="sourceCode rust code-with-copy"><code class="sourceCode rust"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="kw">fn</span> area(width<span class="op">:</span> <span class="dt">u32</span><span class="op">,</span> height<span class="op">:</span> <span class="dt">u32</span>) <span class="op">-&gt;</span> <span class="dt">u32</span> <span class="op">{</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Hàm <code>area</code> được cho là để tính toán diện tích của một hình chữ nhật, nhưng hàm chúng ta viết có hai tham số và không rõ ràng ở bất kỳ đâu trong chương trình của chúng ta rằng các tham số này có liên quan. Sẽ dễ đọc và dễ quản lý hơn nếu nhóm chiều rộng và chiều cao lại với nhau. Chúng ta đã thảo luận về một cách thực hiện việc đó trong phần “Kiểu Tuple” của Chương 3: bằng cách sử dụng tuple.</p>
+<p><strong>Cải tiến với Tuple</strong></p>
+<p>Liệt kê 5-9 hiển thị một phiên bản khác của chương trình của chúng ta sử dụng tuple.</p>
+<div class="sourceCode" id="cb24"><pre class="sourceCode rust code-with-copy"><code class="sourceCode rust"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="kw">fn</span> main() <span class="op">{</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">let</span> rect1 <span class="op">=</span> (<span class="dv">30</span><span class="op">,</span> <span class="dv">50</span>)<span class="op">;</span></span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>    <span class="pp">println!</span>(</span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>        <span class="st">"The area of the rectangle is {} square pixels."</span><span class="op">,</span></span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>        area(rect1)</span>
+<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a>    )<span class="op">;</span></span>
+<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-10"><a href="#cb24-10" aria-hidden="true" tabindex="-1"></a><span class="kw">fn</span> area(dimensions<span class="op">:</span> (<span class="dt">u32</span><span class="op">,</span> <span class="dt">u32</span>)) <span class="op">-&gt;</span> <span class="dt">u32</span> <span class="op">{</span></span>
+<span id="cb24-11"><a href="#cb24-11" aria-hidden="true" tabindex="-1"></a>    dimensions<span class="op">.</span><span class="dv">0</span> <span class="op">*</span> dimensions<span class="op">.</span><span class="dv">1</span></span>
+<span id="cb24-12"><a href="#cb24-12" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><strong>Bảng 5-9: Xác định chiều rộng và chiều cao của hình chữ nhật bằng một tuple</strong></p>
+<p>Theo một cách nào đó, chương trình này tốt hơn. Tuple cho phép chúng ta thêm một chút cấu trúc và bây giờ chúng ta chỉ truyền một đối số. Nhưng theo cách khác, phiên bản này kém rõ ràng hơn: tuple không đặt tên cho các phần tử của chúng, vì vậy chúng ta phải lập chỉ mục vào các phần của tuple, khiến phép tính của chúng ta trở nên kém rõ ràng hơn.</p>
+<p>Việc trộn lẫn chiều rộng và chiều cao sẽ không ảnh hưởng đến việc tính toán diện tích, nhưng nếu chúng ta muốn vẽ hình chữ nhật trên màn hình, thì điều đó sẽ quan trọng! Chúng ta phải nhớ rằng <code>width</code> là chỉ mục tuple <code>0</code> và <code>height</code> là chỉ mục tuple <code>1</code>. Điều này thậm chí còn khó hơn đối với người khác để tìm ra và ghi nhớ nếu họ sử dụng mã của chúng ta. Bởi vì chúng tôi chưa truyền đạt ý nghĩa của dữ liệu trong mã của mình, nên bây giờ dễ mắc lỗi hơn.</p>
+<p><strong>Cải tiến với Struct: Thêm nhiều ý nghĩa hơn</strong></p>
+<p>Chúng ta sử dụng struct để thêm ý nghĩa bằng cách gắn nhãn cho dữ liệu. Chúng ta có thể chuyển đổi tuple đang sử dụng thành một struct có tên cho toàn bộ và tên cho các phần, như được hiển thị trong Liệt kê 5-10.</p>
+<div class="sourceCode" id="cb25"><pre class="sourceCode rust code-with-copy"><code class="sourceCode rust"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="kw">struct</span> Rectangle <span class="op">{</span></span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>    width<span class="op">:</span> <span class="dt">u32</span><span class="op">,</span></span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>    height<span class="op">:</span> <span class="dt">u32</span><span class="op">,</span></span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a><span class="kw">fn</span> main() <span class="op">{</span></span>
+<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a>    <span class="kw">let</span> rect1 <span class="op">=</span> Rectangle <span class="op">{</span></span>
+<span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a>        width<span class="op">:</span> <span class="dv">30</span><span class="op">,</span></span>
+<span id="cb25-9"><a href="#cb25-9" aria-hidden="true" tabindex="-1"></a>        height<span class="op">:</span> <span class="dv">50</span><span class="op">,</span></span>
+<span id="cb25-10"><a href="#cb25-10" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
+<span id="cb25-11"><a href="#cb25-11" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="cú-pháp-phương-thức-trong-rust" class="level2">
+<h2 class="anchored" data-anchor-id="cú-pháp-phương-thức-trong-rust">Cú pháp phương thức trong Rust</h2>
+<p>Dưới đây là tóm tắt các điểm chính về cú pháp phương thức trong Rust:</p>
+<p><strong>Giống với hàm:</strong></p>
+<ul>
+<li>Phương thức được khai báo tương tự như hàm, sử dụng từ khóa <code>fn</code>, tên và dấu ngoặc đơn.</li>
+<li>Chúng có thể có tham số và giá trị trả về.</li>
+<li>Chúng chứa mã được thực thi khi phương thức được gọi.</li>
+</ul>
+<p><strong>Khác với hàm:</strong></p>
+<ul>
+<li><strong>Bối cảnh:</strong> Phương thức được định nghĩa trong bối cảnh của một <code>struct</code> (hoặc <code>enum</code> hoặc <code>trait object</code>), không phải trong phạm vi chính.</li>
+<li><strong>Tham số đầu tiên:</strong> Phương thức có một tham số đặc biệt đầu tiên tên là <code>self</code>. Tham số này đại diện cho thể hiện của struct mà phương thức đang được gọi.</li>
+</ul>
+<p><strong>Gọi phương thức:</strong></p>
+<ul>
+<li>Phương thức được gọi bằng ký hiệu chấm: <code>instance_name.method_name(arguments)</code>.</li>
+<li><code>instance_name</code> là biến giữ thể hiện struct.</li>
+<li><code>method_name</code> là tên của phương thức bạn muốn gọi.</li>
+<li><code>arguments</code> là bất kỳ giá trị nào được truyền cho phương thức dưới dạng đầu vào.</li>
+</ul>
+<p><strong>Mượn:</strong></p>
+<ul>
+<li>Phương thức có thể chỉ định cách chúng mượn tham số <code>self</code>:
+<ul>
+<li><code>&amp;self</code>: Mượn thể hiện không thay đổi (chỉ đọc).</li>
+<li><code>&amp;mut self</code>: Mượn thể hiện có thể thay đổi (đọc-ghi).</li>
+<li><code>self</code>: Tiếp quản quyền sở hữu của thể hiện (hiếm khi sử dụng).</li>
+</ul></li>
+</ul>
+<p><strong>Ví dụ:</strong></p>
+<div class="sourceCode" id="cb26"><pre class="sourceCode rust code-with-copy"><code class="sourceCode rust"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="kw">struct</span> Rectangle <span class="op">{</span></span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>    width<span class="op">:</span> <span class="dt">u32</span><span class="op">,</span></span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>    height<span class="op">:</span> <span class="dt">u32</span><span class="op">,</span></span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a><span class="kw">impl</span> Rectangle <span class="op">{</span></span>
+<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a>    <span class="kw">fn</span> area(<span class="op">&amp;</span><span class="kw">self</span>) <span class="op">-&gt;</span> <span class="dt">u32</span> <span class="op">{</span></span>
+<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a>        <span class="kw">self</span><span class="op">.</span>width <span class="op">*</span> <span class="kw">self</span><span class="op">.</span>height</span>
+<span id="cb26-9"><a href="#cb26-9" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb26-10"><a href="#cb26-10" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb26-11"><a href="#cb26-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-12"><a href="#cb26-12" aria-hidden="true" tabindex="-1"></a><span class="kw">fn</span> main() <span class="op">{</span></span>
+<span id="cb26-13"><a href="#cb26-13" aria-hidden="true" tabindex="-1"></a>    <span class="kw">let</span> rect1 <span class="op">=</span> Rectangle <span class="op">{</span> width<span class="op">:</span> <span class="dv">30</span><span class="op">,</span> height<span class="op">:</span> <span class="dv">50</span> <span class="op">};</span></span>
+<span id="cb26-14"><a href="#cb26-14" aria-hidden="true" tabindex="-1"></a>    <span class="kw">let</span> area <span class="op">=</span> rect1<span class="op">.</span>area()<span class="op">;</span> <span class="co">// Gọi phương thức area</span></span>
+<span id="cb26-15"><a href="#cb26-15" aria-hidden="true" tabindex="-1"></a>    <span class="pp">println!</span>(<span class="st">"Diện tích hình chữ nhật là {} pixel vuông."</span><span class="op">,</span> area)<span class="op">;</span></span>
+<span id="cb26-16"><a href="#cb26-16" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><strong>Giải thích:</strong></p>
+<ul>
+<li><code>Rectangle</code> là một struct định nghĩa hai trường: <code>width</code> và <code>height</code>.</li>
+<li><code>impl Rectangle { ... }</code> định nghĩa các phương thức liên quan đến struct <code>Rectangle</code>.</li>
+<li><code>area(&amp;self)</code> là một phương thức tính diện tích hình chữ nhật. Nó mượn thể hiện (<code>&amp;self</code>) không thay đổi.</li>
+<li><code>rect1.area()</code> gọi phương thức <code>area</code> trên thể hiện <code>rect1</code>.</li>
+</ul>
+</section>
+<section id="mở-rộng-về-enum-trong-rust-ví-dụ-thực-tế-và-ứng-dụng-nâng-cao" class="level2">
+<h2 class="anchored" data-anchor-id="mở-rộng-về-enum-trong-rust-ví-dụ-thực-tế-và-ứng-dụng-nâng-cao">Mở rộng về Enum trong Rust: Ví dụ thực tế và ứng dụng nâng cao</h2>
+<p><strong>Ví dụ thực tế:</strong></p>
+<p>Giả sử bạn đang xây dựng một ứng dụng quản lý thư viện. Bạn cần lưu trữ thông tin về sách, bao gồm tiêu đề, tác giả, ngày xuất bản và ISBN. Bạn có thể sử dụng một struct để biểu diễn thông tin này:</p>
+<div class="sourceCode" id="cb27"><pre class="sourceCode rust code-with-copy"><code class="sourceCode rust"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="kw">struct</span> Book <span class="op">{</span></span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>    title<span class="op">:</span> <span class="dt">String</span><span class="op">,</span></span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>    author<span class="op">:</span> <span class="dt">String</span><span class="op">,</span></span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>    published_date<span class="op">:</span> <span class="dt">String</span><span class="op">,</span></span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a>    isbn<span class="op">:</span> <span class="dt">String</span><span class="op">,</span></span>
+<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Tuy nhiên, struct này không thể biểu diễn trường hợp sách không có ISBN. Để giải quyết vấn đề này, bạn có thể sử dụng enum <code>Option&lt;T&gt;</code>:</p>
+<div class="sourceCode" id="cb28"><pre class="sourceCode rust code-with-copy"><code class="sourceCode rust"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="kw">enum</span> BookInfo <span class="op">{</span></span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>    Book(Book)<span class="op">,</span></span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>    NoIsbn(<span class="dt">String</span>)<span class="op">,</span></span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a><span class="kw">let</span> book_with_isbn <span class="op">=</span> <span class="pp">BookInfo::</span>Book(Book <span class="op">{</span></span>
+<span id="cb28-7"><a href="#cb28-7" aria-hidden="true" tabindex="-1"></a>    title<span class="op">:</span> <span class="dt">String</span><span class="pp">::</span>from(<span class="st">"The Rust Programming Language"</span>)<span class="op">,</span></span>
+<span id="cb28-8"><a href="#cb28-8" aria-hidden="true" tabindex="-1"></a>    author<span class="op">:</span> <span class="dt">String</span><span class="pp">::</span>from(<span class="st">"Steve Klabnik and Carol Nichols"</span>)<span class="op">,</span></span>
+<span id="cb28-9"><a href="#cb28-9" aria-hidden="true" tabindex="-1"></a>    published_date<span class="op">:</span> <span class="dt">String</span><span class="pp">::</span>from(<span class="st">"2018-05-01"</span>)<span class="op">,</span></span>
+<span id="cb28-10"><a href="#cb28-10" aria-hidden="true" tabindex="-1"></a>    isbn<span class="op">:</span> <span class="dt">String</span><span class="pp">::</span>from(<span class="st">"978-1-492-04033-1"</span>)<span class="op">,</span></span>
+<span id="cb28-11"><a href="#cb28-11" aria-hidden="true" tabindex="-1"></a><span class="op">}</span>)<span class="op">;</span></span>
+<span id="cb28-12"><a href="#cb28-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-13"><a href="#cb28-13" aria-hidden="true" tabindex="-1"></a><span class="kw">let</span> book_without_isbn <span class="op">=</span> <span class="pp">BookInfo::</span>NoIsbn(<span class="dt">String</span><span class="pp">::</span>from(<span class="st">"The Art of Computer Programming"</span>))<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Với enum <code>BookInfo</code>, bạn có thể biểu diễn cả hai trường hợp: sách có ISBN và sách không có ISBN. Điều này giúp mã của bạn rõ ràng và dễ hiểu hơn.</p>
+<p><strong>Ứng dụng nâng cao:</strong></p>
+<p>Enum có thể được sử dụng cho nhiều mục đích khác nhau, bao gồm:</p>
+<ul>
+<li><strong>Biểu diễn trạng thái:</strong> Enum có thể được sử dụng để biểu diễn trạng thái của một hệ thống, chẳng hạn như trạng thái của một nút trong giao diện người dùng hoặc trạng thái của một yêu cầu mạng.</li>
+<li><strong>Lỗi xử lý:</strong> Enum có thể được sử dụng để biểu diễn các lỗi khác nhau có thể xảy ra trong chương trình của bạn.</li>
+<li><strong>Mô hình hóa dữ liệu phức tạp:</strong> Enum có thể được sử dụng để mô hình hóa dữ liệu phức tạp, chẳng hạn như cấu trúc cây hoặc biểu đồ.</li>
+</ul>
+<p><strong>Ví dụ về việc sử dụng enum để biểu diễn trạng thái:</strong></p>
+<div class="sourceCode" id="cb29"><pre class="sourceCode rust code-with-copy"><code class="sourceCode rust"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="kw">enum</span> ButtonState <span class="op">{</span></span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>    Idle<span class="op">,</span></span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>    Pressed<span class="op">,</span></span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a>    Disabled<span class="op">,</span></span>
+<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-7"><a href="#cb29-7" aria-hidden="true" tabindex="-1"></a><span class="kw">let</span> <span class="kw">mut</span> button_state <span class="op">=</span> <span class="pp">ButtonState::</span>Idle<span class="op">;</span></span>
+<span id="cb29-8"><a href="#cb29-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-9"><a href="#cb29-9" aria-hidden="true" tabindex="-1"></a><span class="co">// Xử lý sự kiện click chuột</span></span>
+<span id="cb29-10"><a href="#cb29-10" aria-hidden="true" tabindex="-1"></a>button_state <span class="op">=</span> <span class="pp">ButtonState::</span>Pressed<span class="op">;</span></span>
+<span id="cb29-11"><a href="#cb29-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-12"><a href="#cb29-12" aria-hidden="true" tabindex="-1"></a><span class="co">// Xử lý sự kiện nhả chuột</span></span>
+<span id="cb29-13"><a href="#cb29-13" aria-hidden="true" tabindex="-1"></a>button_state <span class="op">=</span> <span class="pp">ButtonState::</span>Idle<span class="op">;</span></span>
+<span id="cb29-14"><a href="#cb29-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-15"><a href="#cb29-15" aria-hidden="true" tabindex="-1"></a><span class="co">// Vô hiệu hóa nút</span></span>
+<span id="cb29-16"><a href="#cb29-16" aria-hidden="true" tabindex="-1"></a>button_state <span class="op">=</span> <span class="pp">ButtonState::</span>Disabled<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Enum <code>ButtonState</code> có thể được sử dụng để biểu diễn trạng thái của một nút trong giao diện người dùng. Nó có ba biến thể: <code>Idle</code>, <code>Pressed</code> và <code>Disabled</code>.</p>
+<p><strong>Ví dụ về việc sử dụng enum để xử lý lỗi:</strong></p>
+<div class="sourceCode" id="cb30"><pre class="sourceCode rust code-with-copy"><code class="sourceCode rust"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="kw">enum</span> <span class="bu">Error</span> <span class="op">{</span></span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>    IoError<span class="op">,</span></span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>    ParseError<span class="op">,</span></span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a>    NetworkError<span class="op">,</span></span>
+<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-7"><a href="#cb30-7" aria-hidden="true" tabindex="-1"></a><span class="kw">fn</span> read_file(filename<span class="op">:</span> <span class="op">&amp;</span><span class="dt">str</span>) <span class="op">-&gt;</span> <span class="dt">Result</span><span class="op">&lt;</span><span class="dt">String</span><span class="op">,</span> <span class="bu">Error</span><span class="op">&gt;</span> <span class="op">{</span></span>
+<span id="cb30-8"><a href="#cb30-8" aria-hidden="true" tabindex="-1"></a>    <span class="co">// ...</span></span>
+<span id="cb30-9"><a href="#cb30-9" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb30-10"><a href="#cb30-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-11"><a href="#cb30-11" aria-hidden="true" tabindex="-1"></a><span class="cf">match</span> read_file(<span class="st">"myfile.txt"</span>) <span class="op">{</span></span>
+<span id="cb30-12"><a href="#cb30-12" aria-hidden="true" tabindex="-1"></a>    <span class="cn">Ok</span>(contents) <span class="op">=&gt;</span> <span class="op">{</span></span>
+<span id="cb30-13"><a href="#cb30-13" aria-hidden="true" tabindex="-1"></a>        <span class="co">// Xử lý nội dung tệp</span></span>
+<span id="cb30-14"><a href="#cb30-14" aria-hidden="true" tabindex="-1"></a>    <span class="op">},</span></span>
+<span id="cb30-15"><a href="#cb30-15" aria-hidden="true" tabindex="-1"></a>    <span class="cn">Err</span>(error) <span class="op">=&gt;</span> <span class="op">{</span></span>
+<span id="cb30-16"><a href="#cb30-16" aria-hidden="true" tabindex="-1"></a>        <span class="co">// Xử lý lỗi</span></span>
+<span id="cb30-17"><a href="#cb30-17" aria-hidden="true" tabindex="-1"></a>        <span class="cf">match</span> error <span class="op">{</span></span>
+<span id="cb30-18"><a href="#cb30-18" aria-hidden="true" tabindex="-1"></a>            <span class="bu">Error</span><span class="pp">::</span>IoError <span class="op">=&gt;</span> <span class="op">{</span></span>
+<span id="cb30-19"><a href="#cb30-19" aria-hidden="true" tabindex="-1"></a>                <span class="co">// ...</span></span>
+<span id="cb30-20"><a href="#cb30-20" aria-hidden="true" tabindex="-1"></a>            <span class="op">},</span></span>
+<span id="cb30-21"><a href="#cb30-21" aria-hidden="true" tabindex="-1"></a>            <span class="bu">Error</span><span class="pp">::</span>ParseError <span class="op">=&gt;</span> <span class="op">{</span></span>
+<span id="cb30-22"><a href="#cb30-22" aria-hidden="true" tabindex="-1"></a>                <span class="co">// ...</span></span>
+<span id="cb30-23"><a href="#cb30-23" aria-hidden="true" tabindex="-1"></a>            <span class="op">},</span></span>
+<span id="cb30-24"><a href="#cb30-24" aria-hidden="true" tabindex="-1"></a>            <span class="bu">Error</span><span class="pp">::</span>NetworkError <span class="op">=&gt;</span> <span class="op">{</span></span>
+<span id="cb30-25"><a href="#cb30-25" aria-hidden="true" tabindex="-1"></a>                <span class="co">// ...</span></span>
+<span id="cb30-26"><a href="#cb30-26" aria-hidden="true" tabindex="-1"></a>            <span class="op">},</span></span>
+<span id="cb30-27"><a href="#cb30-27" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
+<span id="cb30-28"><a href="#cb30-28" aria-hidden="true" tabindex="-1"></a>    <span class="op">},</span></span>
+<span id="cb30-29"><a href="#cb30-29" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Enum <code>Error</code> có thể được sử dụng để biểu diễn các lỗi khác nhau có thể xảy ra trong hàm <code>read_file</code>.</p>
+<p><strong>Kết luận:</strong></p>
+<p>Enum là một công cụ mạnh mẽ và linh hoạt có thể được sử dụng cho nhiều mục đích khác nhau trong Rust. Chúng giúp mã của bạn rõ ràng, dễ hiểu và dễ bảo trì hơn.</p>
+<p><strong>Ngoài ra:</strong></p>
+<ul>
+<li>Enum có thể được sử dụng để tạo các kiểu dữ liệu tùy chỉnh của riêng bạn.</li>
+<li>Enum có thể được sử dụng để biểu diễn các tập hợp giá trị hữu hạn.</li>
+<li>Enum có thể được sử dụng để cải thiện hiệu suất của chương trình của bạn.</li>
+</ul>
+</section>
+<section id="phân-tích-chuyên-sâu-về-cấu-trúc-điều-khiển-match-trong-rust" class="level2">
+<h2 class="anchored" data-anchor-id="phân-tích-chuyên-sâu-về-cấu-trúc-điều-khiển-match-trong-rust">Phân tích chuyên sâu về cấu trúc điều khiển <code>match</code> trong Rust</h2>
+<p><strong>Ví dụ thực tế:</strong></p>
+<p>Giả sử bạn đang xây dựng một ứng dụng quản lý thư viện. Bạn cần lưu trữ thông tin về sách, bao gồm tiêu đề, tác giả, ngày xuất bản và ISBN. Bạn có thể sử dụng <code>match</code> để xác định loại sách và xử lý thông tin tương ứng:</p>
+<div class="sourceCode" id="cb31"><pre class="sourceCode rust code-with-copy"><code class="sourceCode rust"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="kw">enum</span> BookInfo <span class="op">{</span></span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>    Book <span class="op">{</span></span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>        title<span class="op">:</span> <span class="dt">String</span><span class="op">,</span></span>
+<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a>        author<span class="op">:</span> <span class="dt">String</span><span class="op">,</span></span>
+<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a>        published_date<span class="op">:</span> <span class="dt">String</span><span class="op">,</span></span>
+<span id="cb31-6"><a href="#cb31-6" aria-hidden="true" tabindex="-1"></a>        isbn<span class="op">:</span> <span class="dt">String</span><span class="op">,</span></span>
+<span id="cb31-7"><a href="#cb31-7" aria-hidden="true" tabindex="-1"></a>    <span class="op">},</span></span>
+<span id="cb31-8"><a href="#cb31-8" aria-hidden="true" tabindex="-1"></a>    Ebook <span class="op">{</span></span>
+<span id="cb31-9"><a href="#cb31-9" aria-hidden="true" tabindex="-1"></a>        title<span class="op">:</span> <span class="dt">String</span><span class="op">,</span></span>
+<span id="cb31-10"><a href="#cb31-10" aria-hidden="true" tabindex="-1"></a>        author<span class="op">:</span> <span class="dt">String</span><span class="op">,</span></span>
+<span id="cb31-11"><a href="#cb31-11" aria-hidden="true" tabindex="-1"></a>        published_date<span class="op">:</span> <span class="dt">String</span><span class="op">,</span></span>
+<span id="cb31-12"><a href="#cb31-12" aria-hidden="true" tabindex="-1"></a>        file_format<span class="op">:</span> <span class="dt">String</span><span class="op">,</span></span>
+<span id="cb31-13"><a href="#cb31-13" aria-hidden="true" tabindex="-1"></a>    <span class="op">},</span></span>
+<span id="cb31-14"><a href="#cb31-14" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb31-15"><a href="#cb31-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-16"><a href="#cb31-16" aria-hidden="true" tabindex="-1"></a><span class="kw">let</span> book_info <span class="op">=</span> <span class="pp">BookInfo::</span>Ebook <span class="op">{</span></span>
+<span id="cb31-17"><a href="#cb31-17" aria-hidden="true" tabindex="-1"></a>    title<span class="op">:</span> <span class="dt">String</span><span class="pp">::</span>from(<span class="st">"The Rust Programming Language"</span>)<span class="op">,</span></span>
+<span id="cb31-18"><a href="#cb31-18" aria-hidden="true" tabindex="-1"></a>    author<span class="op">:</span> <span class="dt">String</span><span class="pp">::</span>from(<span class="st">"Steve Klabnik and Carol Nichols"</span>)<span class="op">,</span></span>
+<span id="cb31-19"><a href="#cb31-19" aria-hidden="true" tabindex="-1"></a>    published_date<span class="op">:</span> <span class="dt">String</span><span class="pp">::</span>from(<span class="st">"2018-05-01"</span>)<span class="op">,</span></span>
+<span id="cb31-20"><a href="#cb31-20" aria-hidden="true" tabindex="-1"></a>    file_format<span class="op">:</span> <span class="dt">String</span><span class="pp">::</span>from(<span class="st">"EPUB"</span>)<span class="op">,</span></span>
+<span id="cb31-21"><a href="#cb31-21" aria-hidden="true" tabindex="-1"></a><span class="op">};</span></span>
+<span id="cb31-22"><a href="#cb31-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-23"><a href="#cb31-23" aria-hidden="true" tabindex="-1"></a><span class="cf">match</span> book_info <span class="op">{</span></span>
+<span id="cb31-24"><a href="#cb31-24" aria-hidden="true" tabindex="-1"></a>    <span class="pp">BookInfo::</span>Book <span class="op">{</span> title<span class="op">,</span> author<span class="op">,</span> published_date<span class="op">,</span> isbn <span class="op">}</span> <span class="op">=&gt;</span> <span class="op">{</span></span>
+<span id="cb31-25"><a href="#cb31-25" aria-hidden="true" tabindex="-1"></a>        <span class="pp">println!</span>(<span class="st">"Sách in:"</span>)<span class="op">;</span></span>
+<span id="cb31-26"><a href="#cb31-26" aria-hidden="true" tabindex="-1"></a>        <span class="pp">println!</span>(<span class="st">"Tiêu đề: {}"</span><span class="op">,</span> title)<span class="op">;</span></span>
+<span id="cb31-27"><a href="#cb31-27" aria-hidden="true" tabindex="-1"></a>        <span class="pp">println!</span>(<span class="st">"Tác giả: {}"</span><span class="op">,</span> author)<span class="op">;</span></span>
+<span id="cb31-28"><a href="#cb31-28" aria-hidden="true" tabindex="-1"></a>        <span class="pp">println!</span>(<span class="st">"Ngày xuất bản: {}"</span><span class="op">,</span> published_date)<span class="op">;</span></span>
+<span id="cb31-29"><a href="#cb31-29" aria-hidden="true" tabindex="-1"></a>        <span class="pp">println!</span>(<span class="st">"ISBN: {}"</span><span class="op">,</span> isbn)<span class="op">;</span></span>
+<span id="cb31-30"><a href="#cb31-30" aria-hidden="true" tabindex="-1"></a>    <span class="op">},</span></span>
+<span id="cb31-31"><a href="#cb31-31" aria-hidden="true" tabindex="-1"></a>    <span class="pp">BookInfo::</span>Ebook <span class="op">{</span> title<span class="op">,</span> author<span class="op">,</span> published_date<span class="op">,</span> file_format <span class="op">}</span> <span class="op">=&gt;</span> <span class="op">{</span></span>
+<span id="cb31-32"><a href="#cb31-32" aria-hidden="true" tabindex="-1"></a>        <span class="pp">println!</span>(<span class="st">"Sách điện tử:"</span>)<span class="op">;</span></span>
+<span id="cb31-33"><a href="#cb31-33" aria-hidden="true" tabindex="-1"></a>        <span class="pp">println!</span>(<span class="st">"Tiêu đề: {}"</span><span class="op">,</span> title)<span class="op">;</span></span>
+<span id="cb31-34"><a href="#cb31-34" aria-hidden="true" tabindex="-1"></a>        <span class="pp">println!</span>(<span class="st">"Tác giả: {}"</span><span class="op">,</span> author)<span class="op">;</span></span>
+<span id="cb31-35"><a href="#cb31-35" aria-hidden="true" tabindex="-1"></a>        <span class="pp">println!</span>(<span class="st">"Ngày xuất bản: {}"</span><span class="op">,</span> published_date)<span class="op">;</span></span>
+<span id="cb31-36"><a href="#cb31-36" aria-hidden="true" tabindex="-1"></a>        <span class="pp">println!</span>(<span class="st">"Định dạng tệp: {}"</span><span class="op">,</span> file_format)<span class="op">;</span></span>
+<span id="cb31-37"><a href="#cb31-37" aria-hidden="true" tabindex="-1"></a>    <span class="op">},</span></span>
+<span id="cb31-38"><a href="#cb31-38" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><strong>Mở rộng khả năng:</strong></p>
+<ul>
+<li><strong>Kết hợp với <code>if</code>:</strong> Sử dụng <code>if</code> để kiểm tra điều kiện trước khi khớp mẫu với <code>match</code>:</li>
+</ul>
+<div class="sourceCode" id="cb32"><pre class="sourceCode rust code-with-copy"><code class="sourceCode rust"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="kw">let</span> number <span class="op">=</span> <span class="dv">5</span><span class="op">;</span></span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> number <span class="op">&gt;</span> <span class="dv">0</span> <span class="op">{</span></span>
+<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">match</span> number <span class="op">{</span></span>
+<span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a>        <span class="dv">1</span> <span class="op">=&gt;</span> <span class="pp">println!</span>(<span class="st">"Số một"</span>)<span class="op">,</span></span>
+<span id="cb32-6"><a href="#cb32-6" aria-hidden="true" tabindex="-1"></a>        <span class="dv">2</span> <span class="op">=&gt;</span> <span class="pp">println!</span>(<span class="st">"Số hai"</span>)<span class="op">,</span></span>
+<span id="cb32-7"><a href="#cb32-7" aria-hidden="true" tabindex="-1"></a>        _ <span class="op">=&gt;</span> <span class="pp">println!</span>(<span class="st">"Số lớn hơn hai"</span>)<span class="op">,</span></span>
+<span id="cb32-8"><a href="#cb32-8" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb32-9"><a href="#cb32-9" aria-hidden="true" tabindex="-1"></a><span class="op">}</span> <span class="cf">else</span> <span class="op">{</span></span>
+<span id="cb32-10"><a href="#cb32-10" aria-hidden="true" tabindex="-1"></a>    <span class="pp">println!</span>(<span class="st">"Số âm"</span>)<span class="op">;</span></span>
+<span id="cb32-11"><a href="#cb32-11" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ul>
+<li><p><strong>Khớp với các kiểu dữ liệu phức tạp:</strong> <code>match</code> có thể sử dụng để khớp với các cấu trúc dữ liệu phức tạp như struct, enum, vec, v.v.</p></li>
+<li><p><strong>Lấy giá trị từ các biến thể enum:</strong> Sử dụng <code>match</code> để trích xuất giá trị từ các biến thể enum khác nhau.</p></li>
+</ul>
+<p><strong>Ví dụ nâng cao:</strong></p>
+<p>Giả sử bạn đang viết một chương trình cờ vua. Bạn có thể sử dụng <code>match</code> để xác định vị trí của quân cờ trên bàn cờ và thực hiện các di chuyển hợp lệ:</p>
+<div class="sourceCode" id="cb33"><pre class="sourceCode rust code-with-copy"><code class="sourceCode rust"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="kw">enum</span> Square <span class="op">{</span></span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>    A1<span class="op">,</span> B1<span class="op">,</span> C1<span class="op">,</span> <span class="op">...,</span> H8<span class="op">,</span></span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a><span class="kw">let</span> position <span class="op">=</span> <span class="pp">Square::</span>E4<span class="op">;</span></span>
+<span id="cb33-6"><a href="#cb33-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-7"><a href="#cb33-7" aria-hidden="true" tabindex="-1"></a><span class="cf">match</span> position <span class="op">{</span></span>
+<span id="cb33-8"><a href="#cb33-8" aria-hidden="true" tabindex="-1"></a>    <span class="pp">Square::</span>A1 <span class="op">=&gt;</span> <span class="pp">println!</span>(<span class="st">"Quân cờ ở góc trên bên trái"</span>)<span class="op">,</span></span>
+<span id="cb33-9"><a href="#cb33-9" aria-hidden="true" tabindex="-1"></a>    <span class="pp">Square::</span>E4 <span class="op">=&gt;</span> <span class="pp">println!</span>(<span class="st">"Quân cờ ở trung tâm"</span>)<span class="op">,</span></span>
+<span id="cb33-10"><a href="#cb33-10" aria-hidden="true" tabindex="-1"></a>    <span class="pp">Square::</span>H8 <span class="op">=&gt;</span> <span class="pp">println!</span>(<span class="st">"Quân cờ ở góc dưới bên phải"</span>)<span class="op">,</span></span>
+<span id="cb33-11"><a href="#cb33-11" aria-hidden="true" tabindex="-1"></a>    _ <span class="op">=&gt;</span> <span class="pp">println!</span>(<span class="st">"Quân cờ ở vị trí khác"</span>)<span class="op">,</span></span>
+<span id="cb33-12"><a href="#cb33-12" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><strong>Kết luận:</strong></p>
+<p><code>match</code> là một công cụ mạnh mẽ và linh hoạt trong Rust. Hiểu rõ cách sử dụng <code>match</code> có thể giúp bạn viết mã rõ ràng, súc tích và dễ bảo trì.</p>
+<p><strong>Tài liệu tham khảo:</strong></p>
+<ul>
+<li>The Rust Programming Language - Chapter 18: Control Flow: [đã xoá URL không hợp lệ]</li>
+<li>The Rust Reference - The <code>match</code> Statement: [đã xoá URL không hợp lệ]</li>
+</ul>
+<p><strong>Lưu ý:</strong></p>
+<ul>
+<li>Tránh lặp lại những thông tin đã được đề cập trong phần trả lời trước.</li>
+<li>Cung cấp thêm ví dụ thực tế để minh họa các trường hợp sử dụng khác nhau của <code>match</code>.</li>
+<li>Giải thích cách sử dụng <code>match</code> với các kiểu dữ liệu và cấu trúc phức tạp.</li>
+<li>Đề xuất tài liệu tham khảo để người đọc tìm hiểu thêm.</li>
+</ul>
+<p><strong>Độ dài:</strong></p>
+<p>Câu trả lời này dài hơn câu trả lời trước và cung cấp thêm thông tin chi tiết về <code>match</code>, bao gồm ví dụ thực tế, cách mở rộng khả năng và tài liệu tham khảo.</p>
+</section>
+<section id="kiểm-soát-luồng-ngắn-gọn-với-if-let" class="level2">
+<h2 class="anchored" data-anchor-id="kiểm-soát-luồng-ngắn-gọn-với-if-let">Kiểm soát luồng ngắn gọn với if let</h2>
+<p>Cú pháp <code>if let</code> cho phép bạn kết hợp <code>if</code> và <code>let</code> thành một cách ngắn gọn hơn để xử lý các giá trị khớp với một mẫu nhất định trong khi bỏ qua những giá trị còn lại. Hãy xem xét chương trình trong Liệt kê 6-6, chương trình này khớp với một giá trị <code>Option&lt;u8&gt;</code> trong biến <code>config_max</code> nhưng chỉ muốn thực thi mã nếu biến này có giá trị là <code>Some</code>.</p>
+<div class="sourceCode" id="cb34"><pre class="sourceCode rust code-with-copy"><code class="sourceCode rust"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="kw">let</span> config_max <span class="op">=</span> <span class="cn">Some</span>(<span class="dv">3u8</span>)<span class="op">;</span></span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a><span class="cf">match</span> config_max <span class="op">{</span></span>
+<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a>    <span class="cn">Some</span>(max) <span class="op">=&gt;</span> <span class="pp">println!</span>(<span class="st">"Giá trị tối đa được cấu hình là {}"</span><span class="op">,</span> max)<span class="op">,</span></span>
+<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a>    _ <span class="op">=&gt;</span> ()<span class="op">,</span></span>
+<span id="cb34-5"><a href="#cb34-5" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><strong>Liệt kê 6-6: Một câu lệnh match chỉ thực thi mã khi giá trị là Some</strong></p>
+<p>Nếu giá trị là <code>Some</code>, chúng ta in ra giá trị trong biến thể <code>Some</code> bằng cách gán giá trị cho biến <code>max</code> trong mẫu. Chúng ta không muốn làm gì với giá trị <code>None</code>. Để thỏa mãn biểu thức <code>match</code>, chúng ta phải thêm <code>_ =&gt; ()</code> sau khi xử lý chỉ một biến thể, đây là đoạn mã thừa đáng chán để thêm vào.</p>
+<p>Thay vào đó, chúng ta có thể viết ngắn gọn hơn bằng cách sử dụng <code>if let</code>. Đoạn mã sau đây hoạt động giống như <code>match</code> trong Liệt kê 6-6:</p>
+<div class="sourceCode" id="cb35"><pre class="sourceCode rust code-with-copy"><code class="sourceCode rust"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="kw">let</span> config_max <span class="op">=</span> <span class="cn">Some</span>(<span class="dv">3u8</span>)<span class="op">;</span></span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="kw">let</span> <span class="cn">Some</span>(max) <span class="op">=</span> config_max <span class="op">{</span></span>
+<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a>    <span class="pp">println!</span>(<span class="st">"Giá trị tối đa được cấu hình là {}"</span><span class="op">,</span> max)<span class="op">;</span></span>
+<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Cú pháp <code>if let</code> lấy một mẫu và một biểu thức được phân tách bằng dấu bằng. Nó hoạt động tương tự như <code>match</code>, trong đó biểu thức được đưa vào <code>match</code> và mẫu là nhánh đầu tiên của nó. Trong trường hợp này, mẫu là <code>Some(max)</code>, và <code>max</code> được gán cho giá trị bên trong <code>Some</code>. Sau đó, chúng ta có thể sử dụng <code>max</code> trong thân khối của <code>if let</code> theo cùng cách chúng ta sử dụng <code>max</code> trong nhánh <code>match</code> tương ứng. Khối mã trong khối <code>if let</code> không được chạy nếu giá trị không khớp với mẫu.</p>
+<p>Sử dụng <code>if let</code> có nghĩa là ít gõ phím hơn, ít thụt lề hơn và ít mã thừa hơn. Tuy nhiên, bạn sẽ mất đi tính năng kiểm tra toàn diện mà <code>match</code> cung cấp. Việc lựa chọn giữa <code>match</code> và <code>if let</code> phụ thuộc vào những gì bạn đang làm trong tình huống cụ thể của mình và liệu việc đạt được sự ngắn gọn có phải là một đánh đổi phù hợp để mất đi kiểm tra toàn diện hay không.</p>
+<p>Nói cách khác, bạn có thể coi <code>if let</code> như cú pháp rút gọn cho một câu lệnh <code>match</code> chạy mã khi giá trị khớp với một mẫu và sau đó bỏ qua tất cả các giá trị khác.</p>
+<p>Chúng ta có thể bao gồm một khối <code>else</code> với <code>if let</code>. Khối mã đi kèm với <code>else</code> giống như khối mã sẽ đi với trường hợp <code>_</code> trong biểu thức <code>match</code> tương đương với <code>if let</code> và <code>else</code>. Nhớ lại định nghĩa enum <code>Coin</code> trong Liệt kê 6-4, trong đó biến thể <code>Quarter</code> cũng chứa một giá trị <code>UsState</code>. Nếu chúng ta muốn đếm tất cả các đồng xu không phải đồng 25 xu trong khi thông báo trạng thái của các đồng 25 xu, chúng ta có thể thực hiện điều đó bằng biểu thức <code>match</code> như sau:</p>
+<div class="sourceCode" id="cb36"><pre class="sourceCode rust code-with-copy"><code class="sourceCode rust"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="kw">let</span> <span class="kw">mut</span> count <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a><span class="cf">match</span> coin <span class="op">{</span></span>
+<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a>    <span class="pp">Coin::</span>Quarter(state) <span class="op">=&gt;</span> <span class="pp">println!</span>(<span class="st">"Đồng 25 xu của bang {:?}!"</span><span class="op">,</span> state)<span class="op">,</span></span>
+<span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a>    _ <span class="op">=&gt;</span> count <span class="op">+=</span> <span class="dv">1</span><span class="op">,</span></span>
+<span id="cb36-5"><a href="#cb36-5" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Hoặc chúng ta có thể sử dụng biểu thức <code>if let</code> và <code>else</code> như sau:</p>
+<div class="sourceCode" id="cb37"><pre class="sourceCode rust code-with-copy"><code class="sourceCode rust"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="kw">let</span> <span class="kw">mut</span> count <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="kw">let</span> <span class="pp">Coin::</span>Quarter(state) <span class="op">=</span> coin <span class="op">{</span></span>
+<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a>    <span class="pp">println!</span>(<span class="st">"Đồng 25 xu của bang {:?}!"</span><span class="op">,</span> state)<span class="op">;</span></span>
+<span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a><span class="op">}</span> <span class="cf">else</span> <span class="op">{</span></span>
+<span id="cb37-5"><a href="#cb37-5" aria-hidden="true" tabindex="-1"></a>    count <span class="op">+=</span> <span class="dv">1</span><span class="op">;</span></span>
+<span id="cb37-6"><a href="#cb37-6" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Nếu bạn gặp phải tình huống chương trình của bạn có logic quá phức tạp để thể hiện bằng <code>match</code>, hãy nhớ rằng <code>if let</code> cũng nằm trong hộp công cụ Rust của bạn.</p>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

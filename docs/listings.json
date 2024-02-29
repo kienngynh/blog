@@ -2,9 +2,10 @@
   {
     "listing": "/index.html",
     "items": [
-      "/posts/docker-tutorial/index.html",
       "/posts/sql-tutorial/index.html",
-      "/posts/welcome/index.html"
+      "/posts/docker-tutorial/index.html",
+      "/posts/welcome/index.html",
+      "/posts/my-rust-book/index.html"
     ]
   }
 ]
